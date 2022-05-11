@@ -1,0 +1,162 @@
+
+    {% extends '_base.html' %}
+    {% load static %}
+    {% block content %}
+    
+    <div class="container-scroller">
+      <!-- partial:partials/_sidebar.html -->
+      {% include 'partials/_menu.html' %}
+      <!-- partial -->
+      <!-- INÍCIO BARRA SUPERIOR -->
+
+      <nav class="navbar p-0 fixed-top d-flex flex-row">
+        <div class="navbar-brand-wrapper d-flex d-lg-none align-items-center justify-content-center">
+          <a class="navbar-brand brand-logo-mini" href="index.html"><img src="{% static 'images/logo-mini.svg' %}" alt="logo" /></a>
+        </div>
+        <div class="navbar-menu-wrapper flex-grow d-flex align-items-stretch">
+          <button class="navbar-toggler navbar-toggler align-self-center" type="button" data-toggle="minimize">
+            <span class="mdi mdi-menu"></span>
+          </button>
+          <ul class="navbar-nav w-100">
+            <li class="nav-item w-100">
+              <form class="nav-link mt-2 mt-md-0 d-none d-lg-flex search">
+                <input type="text" class="form-control" placeholder="Pesquisar máquinas">
+              </form>
+            </li>
+          </ul>
+          
+          <ul class="navbar-nav navbar-nav-right">
+            <a type="button" class="btn btn-outline-warning btn-icon-text" onclick="Refresh()">
+              Atualizar</a>
+            <li class="nav-item dropdown d-none d-lg-block">
+              <a class="nav-link btn btn-success create-new-button" id="createbuttonDropdown" data-toggle="dropdown" aria-expanded="false" href="#">Filtrar dados</a>
+              <div style='width: 300px;' class="dropdown-menu dropdown-menu-right navbar-dropdown preview-list" aria-labelledby="createbuttonDropdown">
+                <h6 class="p-3 mb-0">Filtros</h6>
+                <form action={% url 'index' %} method='POST'>
+                  {% csrf_token %}
+                  <div class="dropdown-divider"></div>
+                  <div class="dropdown-item preview-item">
+                    <div style='width: 100%;' class="preview-item-content">
+                      <p>Início: </p>
+                      <input name='data_antiga_index' style='height: 35px;' id="date" type="date" required><input name='hora_antiga' style='margin-left: 20px; height: 35px;' id="date" type="time" required><br><br>
+                      <p>Final: </p>
+                      <input name='data_nova_index' style='height: 35px;' id="date" type="date" required><input name='hora_nova' style='margin-left: 20px; height: 35px;' id="date" type="time" required>
+                    </div>
+                  </div>
+                  <div class="dropdown-divider"></div>
+                  <div style='height: 62px;' >
+                    <div style='width: 100%;' class="preview-item-content">
+                      <button style='float: right; margin-right: 10px; margin-top: 15px;' class="nav-link btn btn-success create-new-button" href="#">Aplicar</button>
+                    </div>
+                  </div>
+                </form>
+              </div>
+            </li>
+            <li class="nav-item nav-settings d-none d-lg-block">
+              <a class="nav-link" href="#">
+                <i class="mdi mdi-settings"></i>
+              </a>
+            </li>
+            
+            <li class="nav-item dropdown">
+              <a class="nav-link" id="profileDropdown" href="#" data-toggle="dropdown">
+                <div class="navbar-profile">
+                  <img class="img-xs rounded-circle" src="{% static 'images/faces/face15.jpg' %}" alt="">
+                  <p class="mb-0 d-none d-sm-block navbar-profile-name">Henry Klein</p>
+                  <i class="mdi mdi-menu-down d-none d-sm-block"></i>
+                </div>
+              </a>
+              <div class="dropdown-menu dropdown-menu-right navbar-dropdown preview-list" aria-labelledby="profileDropdown">
+                <h6 class="p-3 mb-0">Profile</h6>
+                <div class="dropdown-divider"></div>
+                <a class="dropdown-item preview-item">
+                  <div class="preview-thumbnail">
+                    <div class="preview-icon bg-dark rounded-circle">
+                      <i class="mdi mdi-settings text-success"></i>
+                    </div>
+                  </div>
+                  <div class="preview-item-content">
+                    <p class="preview-subject mb-1">Settings</p>
+                  </div>
+                </a>
+                <div class="dropdown-divider"></div>
+                <a class="dropdown-item preview-item">
+                  <div class="preview-thumbnail">
+                    <div class="preview-icon bg-dark rounded-circle">
+                      <i class="mdi mdi-logout text-danger"></i>
+                    </div>
+                  </div>
+                  <div class="preview-item-content">
+                    <p class="preview-subject mb-1">Log out</p>
+                  </div>
+                </a>
+                <div class="dropdown-divider"></div>
+                <p class="p-3 mb-0 text-center">Advanced settings</p>
+              </div>
+            </li>
+          </ul>
+          <button class="navbar-toggler navbar-toggler-right d-lg-none align-self-center" type="button" data-toggle="offcanvas">
+            <span class="mdi mdi-format-line-spacing"></span>
+          </button>
+        </div>
+      </nav>
+      <div class="container-fluid page-body-wrapper">
+        <!-- partial:partials/_navbar.html -->
+        
+          <div class="content-wrapper">
+            <div class="row">
+              <!-- INÍCIO DAS MÁQUINAS -->
+              {% if maquinas %}
+              {% for maquina in maquinas %}
+              <div class="col-md-4 grid-margin stretch-card">
+                <div class="card">
+                  <div style='padding-top: 18px' class="card-body">
+                  <div class='col-xl-3 col-sm-6 grid-margin stretch-card'>
+                    <h4 style='margin-top: 8px;' class="card-title">{{maquina.nome_maquina}}</h4>
+                    <div style='padding-left: 0px;' class="col-3">
+                      <a type="button" class='nav-link' data-toggle="modal" data-target="#exampleModal" data-whatever="{{maquina.nome_maquina}}">
+                        <i class="mdi mdi-border-color"></i>
+                      </a>
+                    </div>
+                  </div>
+                    <canvas id="{{maquina.id}}" class="transaction-chart"></canvas>
+                    <div class="bg-gray-dark d-flex d-md-block d-xl-flex flex-row py-3 px-4 px-md-3 px-xl-4 rounded mt-3">
+                      <div class="text-md-center text-xl-left">
+                        <h6 class="mb-1">Peças produzidas</h6>
+                        <p style='color: #6c729385;' class="mb-0">Atualizado {{ultima_atualizacao}}</p>
+                      </div>
+                      <div class="align-self-center flex-grow text-right text-md-center text-xl-right py-md-2 py-xl-0">
+                        <!-- INÍCIO DA PRODUÇÃO DAS MÁQUINAS -->
+                        {% if maquina.id == 1 %}
+                        <h6 class="font-weight-bold mb-0">{{producao_maquina1}}</h6>
+                        {% elif maquina.id == 3 %}
+                        <h6 class="font-weight-bold mb-0">{{producao_maquina3}}</h6>
+                        {% elif maquina.id == 4 %}
+                        <h6 class="font-weight-bold mb-0">{{producao_maquina4}}</h6>
+                        {% elif maquina.id == 5 %}
+                        <h6 class="font-weight-bold mb-0">{{producao_maquina5}}</h6>
+                        {% endif %}
+                      </div>
+                    </div>
+                        {% if maquina.status_maquina == True %}
+                        <div style='background-color: #00ff3a57; color: #00ff3a; text-align: center;' class="bg-gray-dark d-flex d-md-block d-xl-flex flex-row py-3 px-4 px-md-3 px-xl-4 rounded mt-3">
+                          <span style='margin: 0 auto;'>Operando</span>
+                        </div>
+                        {% elif maquina.status_maquina == False %}
+                        <div style='background-color: #ff00185c; color: #dc3545; text-align: center;' class="bg-gray-dark d-flex d-md-block d-xl-flex flex-row py-3 px-4 px-md-3 px-xl-4 rounded mt-3">
+                          <span style='margin: 0 auto;'>Parada</span>
+                        </div>
+                        {% endif %}
+                  </div>
+                  <a style='background-color: #12151e; border: none; color: #646b8f; ' type="button" class="btn btn-primary btn-fw" href={% url 'index' %}>Abrir</a>
+                </div>
+                
+              </div>
+              {% endfor %}
+              {% endif %}
+              
+            </div>
+          <!-- content-wrapper ends -->
+          <!-- partial:partials/_footer.html -->
+          {% include 'partials/_footer.html' %}
+{% endblock %}

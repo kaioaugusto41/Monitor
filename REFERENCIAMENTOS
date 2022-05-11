@@ -1,0 +1,25 @@
+DASHBOARD:
+    1 - _graficos_maquinas.html (Adicionar máquina) > (Status da máquina)
+    2 - Index.html > for maquinas (Adicionar máquina) > (Dados do gráfico, id da máquina)
+    3 - Conexão com o CLP > (Adicionar máquina) > Adicionar dados da nova máquina no banco de produção, paradas e máquinas.
+
+
+ADICIONAR NOVAS MÁQUINAS:
+    1 - Em 'templates/partials/dash/graficos/_graficos_maquinas.html' pesquisar por <!-- INÍCIO DOS GRAFICOS DAS MÁQUINAS -->
+        1.1 - Adicionar um novo gráfico em Js, assim como as outras antigas.
+
+    2 - Em 'templates/index.html' pesquisar por <!-- INÍCIO DA PRODUÇÃO DAS MÁQUINAS -->
+        2.1 - Adicionar um novo elif maquina.id == 'Id da máquina no banco'
+        2.2 - Adicionar a variável da máquina nova na views.
+
+    
+    3 - Em 'dash/views.py' pesquisar por #INÍCIO DADOS DE PRODUÇÃO DAS MÁQUINAS NA PÁGINA INDEX
+        3.1 - Adiconar um novo tipo de dado, conforme padrão a seguir > 'producao_maquina1' lista_producao_index.count(id_da_maquina)
+
+    4 - Em 'dash/views.py' pesquisar por #INÍCIO DADOS DE PRODUÇÃO DAS MÁQUINAS NA PÁGINA PRODUCAO
+        4.1 - Adiconar um novo tipo de dado, conforme padrão a seguir > 'producao_maquina1' lista_producao_producao.count(id_da_maquina)
+    
+    5 - Em 'dash/views.py' pesquisar por # INÍCIO DAS MÁQUINAS NA PÁGINA GERAL 
+        5.1 - Adicionar a máquina e o ID da mesma nos dados, como a seguir = 'maquina1' Maquina.objects.get(id=1)
+        5.2 - Em 'templates\partials\geral\graficos\graficos_geral1.html' pesquisar por = <!-- INÍCIO GRÁFICOS PRODUÇÃO GERAL - GRÁFICO 1-->
+            5.2.1 - Adicionar a variável da máquina e organizar dados do gráfico.

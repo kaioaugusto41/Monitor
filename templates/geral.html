@@ -1,0 +1,172 @@
+{% extends '_base.html' %}
+{% load static %}
+{% block content %}
+
+{% include 'partials/geral/graficos/graficos_geral1.html' %}
+
+    <div class="container-scroller">
+      <!-- partial:../../partials/_sidebar.html -->
+      {% include 'partials/_menu.html' %}
+        <!-- partial -->
+        <!-- INÍCIO BARRA SUPERIOR -->
+
+        <nav class="navbar p-0 fixed-top d-flex flex-row">
+            <div class="navbar-brand-wrapper d-flex d-lg-none align-items-center justify-content-center">
+            <a class="navbar-brand brand-logo-mini" href="index.html"><img src="{% static 'images/logo-mini.svg' %}" alt="logo" /></a>
+            </div>
+            <div class="navbar-menu-wrapper flex-grow d-flex align-items-stretch">
+            <button class="navbar-toggler navbar-toggler align-self-center" type="button" data-toggle="minimize">
+                <span class="mdi mdi-menu"></span>
+            </button>
+            <ul class="navbar-nav w-100">
+                <li class="nav-item w-100">
+                <form class="nav-link mt-2 mt-md-0 d-none d-lg-flex search">
+                    <input type="text" class="form-control" placeholder="Pesquisar máquinas">
+                </form>
+                </li>
+            </ul>
+            
+            <ul class="navbar-nav navbar-nav-right">
+                <a type="button" class="btn btn-outline-warning btn-icon-text" onclick="Refresh()">
+                Atualizar</a>
+                <li class="nav-item dropdown d-none d-lg-block">
+                <a class="nav-link btn btn-success create-new-button" id="createbuttonDropdown" data-toggle="dropdown" aria-expanded="false" href="#">Filtrar dados</a>
+                <div style='width: 300px;' class="dropdown-menu dropdown-menu-right navbar-dropdown preview-list" aria-labelledby="createbuttonDropdown">
+                    <h6 class="p-3 mb-0">Filtros</h6>
+                    <form action={% url 'producao' %} method='POST'>
+                    {% csrf_token %}
+                    <div class="dropdown-divider"></div>
+                    <div class="dropdown-item preview-item">
+                        <div style='width: 100%;' class="preview-item-content">
+                        <p>Início: </p>
+                        <input name='data_antiga_producao' style='height: 35px;' id="date" type="date" required><input name='hora_antiga' style='margin-left: 20px; height: 35px;' id="date" type="time" required><br><br>
+                        <p>Final: </p>
+                        <input name='data_nova_producao' style='height: 35px;' id="date" type="date" required><input name='hora_nova' style='margin-left: 20px; height: 35px;' id="date" type="time" required>
+                        </div>
+                    </div>
+                    <div class="dropdown-divider"></div>
+                    <div style='height: 62px;' >
+                        <div style='width: 100%;' class="preview-item-content">
+                        <button style='float: right; margin-right: 10px; margin-top: 15px;' class="nav-link btn btn-success create-new-button" href="#">Aplicar</button>
+                        </div>
+                    </div>
+                    </form>
+                </div>
+                </li>
+                <li class="nav-item nav-settings d-none d-lg-block">
+                <a class="nav-link" href="#">
+                    <i class="mdi mdi-settings"></i>
+                </a>
+                </li>
+                
+                <li class="nav-item dropdown">
+                <a class="nav-link" id="profileDropdown" href="#" data-toggle="dropdown">
+                    <div class="navbar-profile">
+                    <img class="img-xs rounded-circle" src="{% static 'images/faces/face15.jpg' %}" alt="">
+                    <p class="mb-0 d-none d-sm-block navbar-profile-name">Henry Klein</p>
+                    <i class="mdi mdi-menu-down d-none d-sm-block"></i>
+                    </div>
+                </a>
+                <div class="dropdown-menu dropdown-menu-right navbar-dropdown preview-list" aria-labelledby="profileDropdown">
+                    <h6 class="p-3 mb-0">Profile</h6>
+                    <div class="dropdown-divider"></div>
+                    <a class="dropdown-item preview-item">
+                    <div class="preview-thumbnail">
+                        <div class="preview-icon bg-dark rounded-circle">
+                        <i class="mdi mdi-settings text-success"></i>
+                        </div>
+                    </div>
+                    <div class="preview-item-content">
+                        <p class="preview-subject mb-1">Settings</p>
+                    </div>
+                    </a>
+                    <div class="dropdown-divider"></div>
+                    <a class="dropdown-item preview-item">
+                    <div class="preview-thumbnail">
+                        <div class="preview-icon bg-dark rounded-circle">
+                        <i class="mdi mdi-logout text-danger"></i>
+                        </div>
+                    </div>
+                    <div class="preview-item-content">
+                        <p class="preview-subject mb-1">Log out</p>
+                    </div>
+                    </a>
+                    <div class="dropdown-divider"></div>
+                    <p class="p-3 mb-0 text-center">Advanced settings</p>
+                </div>
+                </li>
+            </ul>
+            <button class="navbar-toggler navbar-toggler-right d-lg-none align-self-center" type="button" data-toggle="offcanvas">
+                <span class="mdi mdi-format-line-spacing"></span>
+            </button>
+            </div>
+        </nav>
+        <div class="main-panel">
+          <div class="content-wrapper">
+            <div class="page-header">
+              <h3 class="page-title">Relatório Geral</h3>
+              <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                  <li class="breadcrumb-item"><a href="#">Charts</a></li>
+                  <li class="breadcrumb-item active" aria-current="page">Chart-js</li>
+                </ol>
+                </div>
+            </nav>
+            
+            <div class="row">
+              
+            </div>
+            <div class="row">
+                {% if maquinas %}
+                {% for maquina in maquinas %}
+                <div class="col-xl-3 col-sm-6 grid-margin stretch-card">
+                  <div class="card">
+                    <div class="card-body">
+                      <div class="row">
+                        <div class="col-9">
+                          <div class="d-flex align-items-center align-self-start">
+                            <h3 class="mb-0">{{maquina.nome_maquina}}</h3>
+                            <p class="text-success ml-2 mb-0 font-weight-medium">ON</p>
+                          </div>
+                        </div>
+                      </div>
+                      <h6 class="text-muted font-weight-normal">{{ultima_atualizacao}}</h6>
+                    </div>
+                  </div>
+                </div>
+                {% endfor %}
+                {% endif %}         
+              </div>
+              <div class="row">
+                <div class="col-lg-6 grid-margin stretch-card">
+                  <div class="card">
+                    <div class="card-body"><div class="chartjs-size-monitor"><div class="chartjs-size-monitor-expand"><div class=""></div></div><div class="chartjs-size-monitor-shrink"><div class=""></div></div></div>
+                      <h4 class="card-title">Produção por máquina</h4>
+                      <canvas id="areaChart" style="height: 146px; display: block; width: 292px;" width="584" height="292" class="chartjs-render-monitor"></canvas>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-lg-6 grid-margin stretch-card">
+                  <div class="card">
+                    <div class="card-body"><div class="chartjs-size-monitor"><div class="chartjs-size-monitor-expand"><div class=""></div></div><div class="chartjs-size-monitor-shrink"><div class=""></div></div></div>
+                      <h4 class="card-title">Paradas por máquina</h4>
+                      <canvas id="barChart" style="height: 146px; display: block; width: 292px;" width="584" height="292" class="chartjs-render-monitor"></canvas>
+                    </div>
+                  </div>
+                </div>
+                </div>
+            </div>
+          <!-- content-wrapper ends -->
+          <!-- partial:../../partials/_footer.html -->
+          
+          {% include 'partials/_footer.html' %}
+          <!-- partial -->
+        </div>
+        <!-- main-panel ends -->
+      </div>
+      <!-- page-body-wrapper ends -->
+    </div>
+    
+    
+
+{% endblock %}
