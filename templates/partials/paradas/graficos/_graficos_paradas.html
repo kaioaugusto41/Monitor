@@ -1,0 +1,165 @@
+<script>
+
+$(function() {
+    /* ChartJS
+     * -------
+     * Data and config for chartjs
+     */
+    'use strict';
+   
+    {% if maquinas %}
+    {% for maquina in maquinas %}
+
+    // GRAFICO DE PARADAS MÁQUINA 1
+    {% if maquina.id == 1 %}
+    var {{maquina.nome_maquina}} = {
+      datasets: [{
+        data: [{{parada_motivo1_maquina1}}, {{parada_motivo2_maquina1}}, {{parada_motivo3_maquina1}}, {{parada_motivo4_maquina1}}, {{parada_motivo5_maquina1}}],
+        backgroundColor: [
+          'rgba(255, 99, 132, 0.5)',
+          'rgba(54, 162, 235, 0.5)',
+          'rgba(255, 206, 86, 0.5)',
+          'rgba(75, 192, 192, 0.5)',
+          'rgba(153, 102, 255, 0.5)',
+          'rgba(255, 159, 64, 0.5)'
+        ],
+        borderColor: [
+          'rgba(255,99,132,1)',
+          'rgba(54, 162, 235, 1)',
+          'rgba(255, 206, 86, 1)',
+          'rgba(75, 192, 192, 1)',
+          'rgba(153, 102, 255, 1)',
+          'rgba(255, 159, 64, 1)'
+        ],
+      }],
+      // These labels appear in the legend and in the tooltips when hovering different arcs
+      labels: [
+      {% for parada in paradas_tipos %}
+        "{{parada}}",
+      {% endfor %}
+      ]
+    };
+
+    // GRAFICO DE PARADAS MÁQUINA 3
+    {% elif maquina.id == 3 %}
+    var {{maquina.nome_maquina}} = {
+      datasets: [{
+        data: [{{parada_motivo1_maquina3}}, {{parada_motivo2_maquina3}}, {{parada_motivo3_maquina3}}, {{parada_motivo4_maquina3}}, {{parada_motivo5_maquina3}}],
+        backgroundColor: [
+          'rgba(255, 99, 132, 0.5)',
+          'rgba(54, 162, 235, 0.5)',
+          'rgba(255, 206, 86, 0.5)',
+          'rgba(75, 192, 192, 0.5)',
+          'rgba(153, 102, 255, 0.5)',
+          'rgba(255, 159, 64, 0.5)'
+        ],
+        borderColor: [
+          'rgba(255,99,132,1)',
+          'rgba(54, 162, 235, 1)',
+          'rgba(255, 206, 86, 1)',
+          'rgba(75, 192, 192, 1)',
+          'rgba(153, 102, 255, 1)',
+          'rgba(255, 159, 64, 1)'
+        ],
+      }],
+      // These labels appear in the legend and in the tooltips when hovering different arcs
+      labels: [
+      {%for parada in paradas_tipos %}
+        "{{parada}}",
+      {% endfor %}
+      ]
+    };
+
+    // GRAFICO DE PARADAS MÁQUINA 4
+    {% elif maquina.id == 4 %}
+    var {{maquina.nome_maquina}} = {
+      datasets: [{
+        data: [{{parada_motivo1_maquina4}}, {{parada_motivo2_maquina4}}, {{parada_motivo3_maquina4}}, {{parada_motivo4_maquina4}}, {{parada_motivo5_maquina4}}],
+        backgroundColor: [
+          'rgba(255, 99, 132, 0.5)',
+          'rgba(54, 162, 235, 0.5)',
+          'rgba(255, 206, 86, 0.5)',
+          'rgba(75, 192, 192, 0.5)',
+          'rgba(153, 102, 255, 0.5)',
+          'rgba(255, 159, 64, 0.5)'
+        ],
+        borderColor: [
+          'rgba(255,99,132,1)',
+          'rgba(54, 162, 235, 1)',
+          'rgba(255, 206, 86, 1)',
+          'rgba(75, 192, 192, 1)',
+          'rgba(153, 102, 255, 1)',
+          'rgba(255, 159, 64, 1)'
+        ],
+      }],
+      // These labels appear in the legend and in the tooltips when hovering different arcs
+      labels: [
+      {%for parada in paradas_tipos %}
+        '{{parada}}',
+      {% endfor %}
+      ]
+    };
+
+    // GRAFICO DE PARADAS MÁQUINA 5
+    {% elif maquina.id == 5 %}
+    var {{maquina.nome_maquina}} = {
+      datasets: [{
+        data: [{{parada_motivo1_maquina5}}, {{parada_motivo2_maquina5}}, {{parada_motivo3_maquina5}}, {{parada_motivo4_maquina5}}, {{parada_motivo5_maquina5}}],
+        backgroundColor: [
+          'rgba(255, 99, 132, 0.5)',
+          'rgba(54, 162, 235, 0.5)',
+          'rgba(255, 206, 86, 0.5)',
+          'rgba(75, 192, 192, 0.5)',
+          'rgba(153, 102, 255, 0.5)',
+          'rgba(255, 159, 64, 0.5)'
+        ],
+        borderColor: [
+          'rgba(255,99,132,1)',
+          'rgba(54, 162, 235, 1)',
+          'rgba(255, 206, 86, 1)',
+          'rgba(75, 192, 192, 1)',
+          'rgba(153, 102, 255, 1)',
+          'rgba(255, 159, 64, 1)'
+        ],
+      }],
+      // These labels appear in the legend and in the tooltips when hovering different arcs
+      labels: [
+      {%for parada in paradas_tipos %}
+        '{{parada}}',
+      {% endfor %}
+      ]
+    };
+    
+    {% endif %}
+    {% endfor %}
+    {% endif %}
+
+    var doughnutPieOptions = {
+      responsive: true,
+      animation: {
+        animateScale: true,
+        animateRotate: true
+      }
+    };
+    
+  
+    // Get context with jQuery - using jQuery's .get() methodd
+
+
+    // INÍCIO DE TODOS OS GRÁFICOS NO TEMPLATE
+    {% if maquinas %}
+    {% for maquina in maquinas %}
+    if ($("#{{maquina.nome_maquina}}").length) {
+      var pieChartCanvas = $("#{{maquina.nome_maquina}}").get(0).getContext("2d");
+      var pieChart = new Chart(pieChartCanvas, {
+        type: 'pie',
+        data: {{maquina.nome_maquina}},
+        options: doughnutPieOptions
+      });
+    }
+    {% endfor %}
+    {% endif %}
+  
+  });
+
+</script>

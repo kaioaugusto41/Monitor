@@ -1,20 +1,50 @@
-import sqlite3
-from datetime import datetime
-import time
 
-data_atual = datetime.now()
+import pandas as pd
+import sqlite3
+from pyModbusTCP.client import ModbusClient
+from pymodbus.payload import BinaryPayloadDecoder
+from pymodbus.constants import Endian
+from pymodbus.payload import BinaryPayloadDecoder
+from pymodbus.client.sync import ModbusTcpClient
+import time
+from datetime import datetime
+
+
 
 connection = sqlite3.connect('db.sqlite3')
 cursor = connection.cursor()
 
-for i in range(0, 250):
+while True:
+    c = ModbusClient()
+    c.host("192.168.0.5")
+    c.port(502)
+    data_atual = datetime.now()
+
+    if not c.open():
+        print('Não foi possível obter o status da linhaaa')
+    if c.is_open():
+        status_linha = c.read_holding_registers(5409, 1)
+        if status_linha:
+            cursor.execute('SELECT id FROM dash_producao ORDER BY id DESC LIMIT 1')
+            ultimo_id = int(cursor.fetchall()[0][0])
+            _id = ultimo_id+1
+            cursor.execute("INSERT INTO dash_producao VALUES({}, '{}', {}, '{}', {})".format(_id, _id, _id, data_atual, 3))
+            connection.commit()
+            print('foi')
+        else:
+            print('Não foi possível obter o status da linha')
+    time.sleep(1)
+
+
 
     # COMANDO QUE PEGA O ÚLTIMO ID DA TABELA DE PRODUÇÃO
-    cursor.execute('SELECT id FROM dash_producao ORDER BY id DESC LIMIT 1')
-    ultimo_id = int(cursor.fetchall()[0][0])
-    _id = ultimo_id+1
+    
 
     # COMANDO QUE ADICIONA A PRODUÇÃO NA TABELA DE PRODUÇÃO DA MÁQUINA 1
-    cursor.execute("INSERT INTO dash_producao VALUES({}, '{}', 1, '{}', 4)".format(_id, i, data_atual))
-    connection.commit()
-    time.sleep(5)
+    
+
+    # simulando dados recebidos e criando um data frame
+
+    
+
+ 
