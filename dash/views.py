@@ -25,9 +25,19 @@ def index(request):
     lista_producao_index.clear()                                                                    # 1.2.7 - Função que limpará a lista antes de adquirir dados novos.
     for i in result:                                                                                # 1.2.8 - Loop que percorrerá os dados de produção e adicionará na lista de produção.
         lista_producao_index.append(i[0])                                                           # 1.2.8.1 - Função que adicionará na lista de produção geral o primeiro item da lista retornada do banco.
+    
+    maquinas_filtradas = []                                                                         # 1.2.9 - Lista de ids das máquinas a serem exibidas na página inicial (Sem filtro).
+    for maquina in Maquina.objects.values('id'):                                                    # 1.2.10 - Loop que percorrerá todas as máquinas cadastradas no banco...
+        maquinas_filtradas.append(maquina['id'])                                                    # 1.2.10.1 - Adicionando cada máquina cadastrada percorrida na lista acima (maquinas_filtradas)
 
     # 1.3 - PRODUÇÃO DAS MÁQUINAS COM FILTRO DE DATA E HORÁRIO (DEFINIDA PELO USUÁRIO)
     if request.method == 'POST':                                                                    # 1.3.1 - Se houver uma requisição do tipo POST na página...
+        maquinas_filtradas = []                                                                     # 1.3.2 - Lista de máquinas com filtro...
+        for maquina in Maquina.objects.values('id'):                                                # 1.3.3 - Loop que percorrerá todas as máquinas cadastradas no banco...
+            maquina_filtrada = request.POST.get('filtro_{}'.format(maquina['id']), False)           # 1.3.3.1 - Bucando os valores filtrados no index.
+            if maquina_filtrada != False:                                                           # 1.3.3.2 - Se o valor recebido for diferente de False...
+                maquinas_filtradas.append(maquina_filtrada)                                         # 1.3.3.2.1 - Adicionando os ids a serem mostrados na lista (maquinas_filtradas)
+        
         data_antiga_index = request.POST.get('data_antiga_index', False) + ' ' + request.POST.get('hora_antiga', False)     # 1.3.2 - Data inicial definida pelo usuário (Início do filtro).
         data_nova_index = request.POST.get('data_nova_index', False) + ' ' + request.POST.get('hora_nova', False)           # 1.3.3 - Data final definida pelo usuário (Final do filtro).
         connection = sqlite3.connect('db.sqlite3')                                                  # 1.3.4 - Comando de conexão com o banco de dados Sqlite.
@@ -37,10 +47,15 @@ def index(request):
         lista_producao_index.clear()                                                                # 1.3.8 - Função que limpará a lista antes de adquirir dados novos.
         for i in result:                                                                            # 1.3.9 - Loop que percorrerá os dados de produção e adicionará na lista de produção.
             lista_producao_index.append(i[0])                                                       # 1.3.9.1 - Função que adicionará na lista de produção geral o primeiro item da lista retornada do banco.
-    
+
     # 1.4 - DADOS QUE SERÃO JOGADOS PARA O TEMPLATE
     dados = {
-        'maquinas': Maquina.objects.all(),                                                          # 1.4.1 - Comando que busca todas as máquinas cadastradas no banco.
+
+        # MÁQUINAS QUE SERÃO MOSTRADAS SEM FILTRO (TODAS)
+        'maquinas': Maquina.objects.all(),
+        
+        # MÁQUINAS QUE SERÃO MOSTRADAS COM FILTRO (AS QUE O USUÁRIO SELECIONAR APENAS)
+        'maquinas_filtradas': Maquina.objects.filter(pk__in=maquinas_filtradas),                    # 1.4.1 - Comando que busca todas as máquinas cadastradas no banco.
 
         #INÍCIO DADOS DE PRODUÇÃO DAS MÁQUINAS NA PÁGINA INDEX
         'producao_maquina1': lista_producao_index.count(1),                                         # 1.4.2 - Conta quantas peças foram produzidas no período filtrado na máquina com o ID 1
@@ -146,8 +161,20 @@ def producao(request):
     for i in result:                                                                                # 3.1.9 - Loop que percorrerá os dados de produção e adicionará na lista de produção.
         lista_producao_producao.append(i[0])                                                        # 3.1.9.1 - Função que adicionará na lista de produção geral o primeiro item da lista retornada do banco.
     
+    maquinas_filtradas = []                                                                         # 1.2.9 - Lista de ids das máquinas a serem exibidas na página inicial (Sem filtro).
+    for maquina in Maquina.objects.values('id'):                                                    # 1.2.10 - Loop que percorrerá todas as máquinas cadastradas no banco...
+        maquinas_filtradas.append(maquina['id'])                                                    # 1.2.10.1 - Adicionando cada máquina cadastrada percorrida na lista acima (maquinas_filtradas)
+
+
     # 3.2 - PRODUÇÃO DAS MÁQUINAS COM FILTRO DE DATA E HORÁRIO (DEFINIDA PELO USUÁRIO)
     if request.method == 'POST':                                                                    # 3.2.1 - Se houver uma requisição do tipo POST na página...
+        
+        maquinas_filtradas = []                                                                     # 1.3.2 - Lista de máquinas com filtro...
+        for maquina in Maquina.objects.values('id'):                                                # 1.3.3 - Loop que percorrerá todas as máquinas cadastradas no banco...
+            maquina_filtrada = request.POST.get('filtro_{}'.format(maquina['id']), False)           # 1.3.3.1 - Bucando os valores filtrados no index.
+            if maquina_filtrada != False:                                                           # 1.3.3.2 - Se o valor recebido for diferente de False...
+                maquinas_filtradas.append(maquina_filtrada)                                         # 1.3.3.2.1 - Adicionando os ids a serem mostrados na lista (maquinas_filtradas)
+        print(maquinas_filtradas)
         data_antiga_producao = request.POST.get('data_antiga_producao', False) + ' ' + request.POST.get('hora_antiga', False)   # 3.2.2 - Data inicial definida pelo usuário (Início do filtro).
         data_nova_producao = request.POST.get('data_nova_producao', False) + ' ' + request.POST.get('hora_nova', False)         # 3.2.3 - Data final definida pelo usuário (Final do filtro).
         connection = sqlite3.connect('db.sqlite3')                                                  # 3.2.4 - Comando de conexão com o banco de dados Sqlite.
@@ -160,7 +187,12 @@ def producao(request):
 
     # 3.3 - DADOS QUE SERÃO JOGADOS PARA O TEMPLATE
     dados = {
-        'maquinas': Maquina.objects.all(),                                                          # 3.3.1 - Variável com comando que busca todas as máquinas cadastradas no banco.
+        
+        # MÁQUINAS QUE SERÃO MOSTRADAS SEM FILTRO (TODAS)
+        'maquinas': Maquina.objects.all(),
+        
+        # MÁQUINAS QUE SERÃO MOSTRADAS COM FILTRO (AS QUE O USUÁRIO SELECIONAR APENAS)
+        'maquinas_filtradas': Maquina.objects.filter(pk__in=maquinas_filtradas),                    # 1.4.1 - Comando que busca todas as máquinas cadastradas no banco.
 
         # INÍCIO DADOS DE PRODUÇÃO DAS MÁQUINAS NA PÁGINA PRODUÇÃO
         'producao_maquina1': lista_producao_producao.count(1),                                      # 3.3.2 - Variável que conta quantas peças foram produzidas no período filtrado na máquina com o ID 1

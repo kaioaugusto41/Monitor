@@ -41,6 +41,15 @@
                       <input name='data_antiga_index' style='height: 35px;' id="date" type="date" required><input name='hora_antiga' style='margin-left: 20px; height: 35px;' id="date" type="time" required><br><br>
                       <p>Final: </p>
                       <input name='data_nova_index' style='height: 35px;' id="date" type="date" required><input name='hora_nova' style='margin-left: 20px; height: 35px;' id="date" type="time" required>
+                      <p style='margin-top: 20px;' >Máquinas: </p>
+                      {% if maquinas %}
+                      {% for maquina in maquinas %}
+                      <div class="form-check form-check-primary">
+                        <label class="form-check-label">
+                          <input name='filtro_{{maquina.id}}' type="checkbox" class="form-check-input" checked="" value='{{maquina.id}}'> {{ maquina.nome_maquina }} <i class="input-helper"></i></label>
+                      </div>
+                      {% endfor %}
+                      {% endif %}
                     </div>
                   </div>
                   <div class="dropdown-divider"></div>
@@ -107,7 +116,7 @@
             <div class="row">
               <!-- INÍCIO DAS MÁQUINAS -->
               {% if maquinas %}
-              {% for maquina in maquinas %}
+              {% for maquina in maquinas_filtradas %}
               <div class="col-md-4 grid-margin stretch-card">
                 <div class="card">
                   <div style='padding-top: 18px' class="card-body">
