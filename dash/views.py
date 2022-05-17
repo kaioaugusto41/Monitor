@@ -62,8 +62,9 @@ def index(request):
         'producao_maquina3': lista_producao_index.count(3),                                         # 1.4.3 - Conta quantas peças foram produzidas no período filtrado na máquina com o ID 3
         'producao_maquina4': lista_producao_index.count(4),                                         # 1.4.4 - Conta quantas peças foram produzidas no período filtrado na máquina com o ID 4
         'producao_maquina5': lista_producao_index.count(5),                                         # 1.4.5 - Conta quantas peças foram produzidas no período filtrado na máquina com o ID 5
+        'producao_maquina6': lista_producao_index.count(6),                                         # 1.4.6 - Conta quantas peças foram produzidas no período filtrado na máquina com o ID 6
 
-        'ultima_atualizacao': datetime.now()                                                        # 1.4.6 - Função que pega a data e o horário atual para indicar a última atualização.
+        'ultima_atualizacao': datetime.now()                                                        # 1.4.7 - Função que pega a data e o horário atual para indicar a última atualização.
  
     }
 
