@@ -130,6 +130,70 @@ $(function() {
       ]
     };
     
+  
+    // GRAFICO DE PARADAS MÁQUINA 6
+    {% elif maquina.id == 6 %}
+    var {{maquina.nome_maquina}} = {
+      datasets: [{
+        data: [{{parada_motivo1_maquina6}}, {{parada_motivo2_maquina6}}, {{parada_motivo3_maquina6}}, {{parada_motivo4_maquina6}}, {{parada_motivo5_maquina6}}],
+        backgroundColor: [
+          'rgba(255, 99, 132, 0.5)',
+          'rgba(54, 162, 235, 0.5)',
+          'rgba(255, 206, 86, 0.5)',
+          'rgba(75, 192, 192, 0.5)',
+          'rgba(153, 102, 255, 0.5)',
+          'rgba(255, 159, 64, 0.5)'
+        ],
+        borderColor: [
+          'rgba(255,99,132,1)',
+          'rgba(54, 162, 235, 1)',
+          'rgba(255, 206, 86, 1)',
+          'rgba(75, 192, 192, 1)',
+          'rgba(153, 102, 255, 1)',
+          'rgba(255, 159, 64, 1)'
+        ],
+      }],
+      // These labels appear in the legend and in the tooltips when hovering different arcs
+      labels: [
+      {%for parada in paradas_tipos %}
+        '{{parada}}',
+      {% endfor %}
+      ]
+    };
+
+    // GRAFICO DE PARADAS MÁQUINA 7
+    {% elif maquina.id == 7 %}
+    var {{maquina.nome_maquina}} = {
+      datasets: [{
+        data: [{{parada_motivo1_maquina7}}, {{parada_motivo2_maquina7}}, {{parada_motivo3_maquina7}}, {{parada_motivo4_maquina7}}, {{parada_motivo5_maquina7}}],
+        backgroundColor: [
+          'rgba(255, 99, 132, 0.5)',
+          'rgba(54, 162, 235, 0.5)',
+          'rgba(255, 206, 86, 0.5)',
+          'rgba(75, 192, 192, 0.5)',
+          'rgba(153, 102, 255, 0.5)',
+          'rgba(255, 159, 64, 0.5)'
+        ],
+        borderColor: [
+          'rgba(255,99,132,1)',
+          'rgba(54, 162, 235, 1)',
+          'rgba(255, 206, 86, 1)',
+          'rgba(75, 192, 192, 1)',
+          'rgba(153, 102, 255, 1)',
+          'rgba(255, 159, 64, 1)'
+        ],
+      }],
+
+      <!-- @MQPARADAS9# -->
+
+      // These labels appear in the legend and in the tooltips when hovering different arcs
+      labels: [
+      {%for parada in paradas_tipos %}
+        '{{parada}}',
+      {% endfor %}
+      ]
+    };
+    
     {% endif %}
     {% endfor %}
     {% endif %}
@@ -141,6 +205,9 @@ $(function() {
         animateRotate: true
       }
     };
+
+    
+    
     
   
     // Get context with jQuery - using jQuery's .get() methodd

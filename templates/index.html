@@ -63,13 +63,7 @@
                 </form>
               </div>
             </li>
-            <li class="nav-item nav-settings d-none d-lg-block">
-              <a class="nav-link" href="#">
-                <i class="mdi mdi-settings"></i>
-              </a>
-            </li>
-            
-            
+
           </ul>
           <button class="navbar-toggler navbar-toggler-right d-lg-none align-self-center" type="button" data-toggle="offcanvas">
             <span class="mdi mdi-format-line-spacing"></span>
@@ -111,6 +105,15 @@
                         <h6 class="font-weight-bold mb-0">{{producao_maquina4}}</h6>
                         {% elif maquina.id == 5 %}
                         <h6 class="font-weight-bold mb-0">{{producao_maquina5}}</h6>
+                        {% elif maquina.id == 6 %}
+                        <h6 class="font-weight-bold mb-0">{{producao_maquina6}}</h6>
+                        {% elif maquina.id == 7 %}
+                        <h6 class="font-weight-bold mb-0">{{producao_maquina7}}</h6>
+      
+                        <!-- @PMINDEX1# -->
+                        <!-- {elif maquina.id == id da máquina nova} -->
+                        <!--<h6 class="font-weight-bold mb-0">{{producao_maquina8}}</h6> -->
+
                         {% endif %}
                       </div>
                     </div>
@@ -124,7 +127,7 @@
                         </div>
                         {% endif %}
                   </div>
-                  <a style='background-color: #12151e; border: none; color: #646b8f; ' type="button" class="btn btn-primary btn-fw" href={% url 'index' %}>Abrir</a>
+                  <a style='background-color: #12151e; border: none; color: #646b8f; ' type="button" class="btn btn-primary btn-fw" href={% url 'maquina' maquina.id %}>Abrir</a>
                 </div>
                 
               </div>
@@ -132,6 +135,7 @@
               {% endif %}
               
             </div>
+
           <!-- content-wrapper ends -->
           <!-- partial:partials/_footer.html -->
           {% include 'partials/_footer.html' %}

@@ -94,14 +94,14 @@
         <ul class="nav flex-column sub-menu">
           {% if maquinas %}
           {% for maquina in maquinas %}
-          <li class="nav-item"> <a class="nav-link" href="pages/samples/blank-page.html"> {{maquina.nome_maquina}} </a></li>
+          <li class="nav-item"> <a class="nav-link" href={% url 'maquina' maquina.id %}> {{maquina.nome_maquina}} </a></li>
           {% endfor %}
           {% endif %}
         </ul>
       </div>
     </li>
     <li class="nav-item menu-items">
-      <a class="nav-link" href="pages/forms/basic_elements.html">
+      <a class="nav-link" href={% url 'relatorios' %}>
         <span class="menu-icon">
           <i class="mdi mdi-printer"></i>
         </span>

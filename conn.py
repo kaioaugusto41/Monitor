@@ -28,7 +28,7 @@ while True:
             cursor.execute('SELECT id FROM dash_producao ORDER BY id DESC LIMIT 1')
             ultimo_id = int(cursor.fetchall()[0][0])
             _id = ultimo_id+1
-            cursor.execute("INSERT INTO dash_producao VALUES({}, '{}', {}, '{}', {})".format(_id, _id, _id, data_atual, 3))
+            cursor.execute("INSERT INTO dash_producao VALUES({}, '{}', {}, '{}', {})".format(_id, _id, _id, data_atual, 7))
             connection.commit()
             print('foi')
         else:
