@@ -27,38 +27,6 @@
             
             <ul class="navbar-nav navbar-nav-right">
                 <a type="button" class="btn btn-outline-warning btn-icon-text" onclick="Refresh()">Atualizar</a>
-              
-                <a style="width: 120px; margin-left: 20px;" type="button" class="btn btn-outline-warning btn-icon-text" href={% url 'producao' %}>Limpar filtros</a>
-                
-                <li class="nav-item dropdown d-none d-lg-block">
-                  <a class="nav-link btn btn-success create-new-button" id="createbuttonDropdown" data-toggle="dropdown" aria-expanded="false" href="#">Filtrar dados</a>
-                  <div style='width: 300px;' class="dropdown-menu dropdown-menu-right navbar-dropdown preview-list" aria-labelledby="createbuttonDropdown">
-                      <h6 class="p-3 mb-0">Filtros</h6>
-                      <form action={% url 'producao' %} method='POST'>
-                      {% csrf_token %}
-                      <div class="dropdown-divider"></div>
-                      <div class="dropdown-item preview-item">
-                          <div style='width: 100%;' class="preview-item-content">
-                          <p>Início: </p>
-                          <input name='data_antiga_producao' style='height: 35px;' id="date" type="date" required><input name='hora_antiga' style='margin-left: 20px; height: 35px;' id="date" type="time" required><br><br>
-                          <p>Final: </p>
-                          <input name='data_nova_producao' style='height: 35px;' id="date" type="date" required><input name='hora_nova' style='margin-left: 20px; height: 35px;' id="date" type="time" required>
-                          <p style='margin-top: 20px;' >Máquinas: </p>
-                          {% if maquinas %}
-                          {% for maquina in maquinas %}
-                          <div class="form-check form-check-primary">
-                            <label class="form-check-label">
-                              <input name='filtro_{{maquina.id}}' type="checkbox" class="form-check-input" checked="" value='{{maquina.id}}'> {{ maquina.nome_maquina }} <i class="input-helper"></i></label>
-                          </div>
-                          {% endfor %}
-                          {% endif %}
-                        </div>
-                      </div>
-                      </form>
-                      <div class="dropdown-divider"></div>
-                      
-                  </div>
-                  </li>
             
             </ul>
             <button class="navbar-toggler navbar-toggler-right d-lg-none align-self-center" type="button" data-toggle="offcanvas">
@@ -162,7 +130,8 @@
                       </div>
                       <div class="modal-body">
                       <span>Selecione as máquinas: </span>
-                      <form>
+                      <form action={% url 'gera_pdf_geral' %} method='GET'>
+                      {% csrf_token %}
                       <div class="row">
                         <div class="col-md-12">
                           <div class="form-group">
@@ -170,7 +139,7 @@
                             {% for maquina in maquinas %}
                             <div style='float: left; width: 50%;' class="form-check">
                               <label class="form-check-label">
-                                <input  type="checkbox" class="form-check-input" checked=""> {{maquina.nome_maquina}} <i class="input-helper"></i></label>
+                                <input name='filtro_{{maquina.id}}' value={{maquina.id}} type="checkbox" class="form-check-input" checked=""> {{maquina.nome_maquina}} <i class="input-helper"></i></label>
                             </div>
                             {% endfor %}
                             {% endif %}
@@ -181,11 +150,11 @@
                         <div class="form-group">
                           <div style='padding-left: 0;'  class="form-check">
                             <p>Data Inicial: </p>
-                            <input name='data_antiga_producao' style='height: 35px; background-color: #1c1d20; border: none; color: #686868;' id="date" type="date" required><input name='hora_antiga' style='margin-left: 20px; height: 35px; background-color: #1c1d20; border: none; color: #686868;' id="date" type="time" required><br>
+                            <input name='data_antiga_relatorio' style='height: 35px; background-color: #1c1d20; border: none; color: #686868;' id="date" type="date" required><input name='hora_antiga' style='margin-left: 20px; height: 35px; background-color: #1c1d20; border: none; color: #686868;' id="date" type="time" required><br>
                           </div>
                           <div style='padding-left: 0;'  class="form-check">
                             <p>Data Final: </p>
-                            <input name='data_nova_producao' style='height: 35px; background-color: #1c1d20; border: none; color: #686868;' id="date" type="date" required><input name='hora_nova' style='margin-left: 20px; height: 35px; background-color: #1c1d20; border: none; color: #686868;' id="date" type="time" required><br><br>
+                            <input name='data_nova_relatorio' style='height: 35px; background-color: #1c1d20; border: none; color: #686868;' id="date" type="date" required><input name='hora_nova' style='margin-left: 20px; height: 35px; background-color: #1c1d20; border: none; color: #686868;' id="date" type="time" required><br><br>
                           </div>
                         </div>
                       </div>
@@ -194,8 +163,8 @@
                     
 
                     <div class="col-md-12">
-                      <button style='float: right;' type="button" class="btn btn-success" ><i class="mdi mdi-download btn-icon-append"></i>Baixar relatório</button>
-                      <button style='float: right; margin-right: 15px;' type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                      <button onclick={% url 'index' %} style='float: right;' class="btn btn-success" ><i class="mdi mdi-download btn-icon-append"></i>Baixar relatório</button>
+                      <button style='float: right; margin-right: 15px;' type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
                     </div>
                     </div>
                   </form>
