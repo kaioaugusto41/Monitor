@@ -508,4 +508,9 @@ def maquina(request, id_maquina):
 
 # 6 - PÁGINA DE RELATÓRIOS
 def relatorios(request):
-    return render(request, 'relatorios.html')
+
+    dados = {
+        'maquinas':Maquina.objects.all()
+    }
+
+    return render(request, 'relatorios.html', dados)
