@@ -5,27 +5,23 @@ import sqlite3
 from io import BytesIO
 from reportlab.pdfgen import canvas
 from django.http import HttpResponse
+from dash.views.funcoes.filtra_maquinas import filtraMaquinas
+from dash.views.funcoes.pega_datas import dataFinal, dataInicial
+from .funcoes.renomeia_maquinas import renomeiaMaquina
+from .funcoes.consultas_banco import consultaProducao, adicionaProducaoLista
 
 def index(request):
 
     # 1.1 - REQUISIÇÃO DA EDIÇÃO DOS NOMES DAS MÁQUINAS 
     if request.method == 'GET':                                                                     # 1.1.1 - Se houver uma requisição do tipo GET na página...
-        nome_maquina_antigo = request.GET.get('nome_maquina_antigo', False)                         # 1.1.2 - Nome da máquina antes de ser renomeada.
-        nome_maquina_novo = request.GET.get('nome_maquina_novo', False)                             # 1.1.3 - Nome da máquina após ser renomeada.
-        maquina_a_renomear  = Maquina.objects.filter(nome_maquina=nome_maquina_antigo).update(nome_maquina=nome_maquina_novo)  # 1.1.4 - Comando para alterar o nome da máquina no banco de dados.
+        renomeiaMaquina(request, 'nome_maquina_antigo',  'nome_maquina_novo')
   
 
     # 1.2 - PRODUÇÃO DAS MÁQUINAS SEM FILTRO (PADRÃO)
     lista_producao_index = []                                                                       # 1.2.1 - Lista que contém todas as produções de todas as máquinas.
     data_antiga_index = str(datetime.now())[:11] + '00:00:01'                                       # 1.2.2 - Data antiga sem filtro.
     data_nova_index = str(datetime.now())[:19]                                                      # 1.2.3 - Data atual sem filtro.
-    connection = sqlite3.connect('db.sqlite3')                                                      # 1.2.4 - Comando de conexão com o banco de dados Sqlite.
-    cursor = connection.cursor()                                                                    # 1.2.5 - Cursor que receberá os comandos SQL.
-    cursor.execute("SELECT maquina_id FROM dash_producao WHERE horario_producao BETWEEN '{}' AND '{}'".format(data_antiga_index, data_nova_index))  # 1.2.6 - Cursor com o comando que filtrará a produção de todas as máquinas da data_antiga (meia noite do dia atual) ao dia e horário atual.
-    result = cursor.fetchall()                                                                      # 1.2.6 - Resultado da filtragem padrão.
-    lista_producao_index.clear()                                                                    # 1.2.7 - Função que limpará a lista antes de adquirir dados novos.
-    for i in result:                                                                                # 1.2.8 - Loop que percorrerá os dados de produção e adicionará na lista de produção.
-        lista_producao_index.append(i[0])                                                           # 1.2.8.1 - Função que adicionará na lista de produção geral o primeiro item da lista retornada do banco.
+    adicionaProducaoLista(data_antiga_index, data_nova_index, lista_producao_index)
     
     maquinas_filtradas = []                                                                         # 1.2.9 - Lista de ids das máquinas a serem exibidas na página inicial (Sem filtro).
     for maquina in Maquina.objects.values('id'):                                                    # 1.2.10 - Loop que percorrerá todas as máquinas cadastradas no banco...
@@ -34,20 +30,9 @@ def index(request):
     # 1.3 - PRODUÇÃO DAS MÁQUINAS COM FILTRO DE DATA E HORÁRIO (DEFINIDA PELO USUÁRIO)
     if request.method == 'POST':                                                                    # 1.3.1 - Se houver uma requisição do tipo POST na página...
         maquinas_filtradas = []                                                                     # 1.3.2 - Lista de máquinas com filtro...
-        for maquina in Maquina.objects.values('id'):                                                # 1.3.3 - Loop que percorrerá todas as máquinas cadastradas no banco...
-            maquina_filtrada = request.POST.get('filtro_{}'.format(maquina['id']), False)           # 1.3.3.1 - Bucando os valores filtrados no index.
-            if maquina_filtrada != False:                                                           # 1.3.3.2 - Se o valor recebido for diferente de False...
-                maquinas_filtradas.append(maquina_filtrada)                                         # 1.3.3.2.1 - Adicionando os ids a serem mostrados na lista (maquinas_filtradas)
-        
-        data_antiga_index = request.POST.get('data_antiga_index', False) + ' ' + request.POST.get('hora_antiga', False)     # 1.3.2 - Data inicial definida pelo usuário (Início do filtro).
-        data_nova_index = request.POST.get('data_nova_index', False) + ' ' + request.POST.get('hora_nova', False)           # 1.3.3 - Data final definida pelo usuário (Final do filtro).
-        connection = sqlite3.connect('db.sqlite3')                                                  # 1.3.4 - Comando de conexão com o banco de dados Sqlite.
-        cursor = connection.cursor()                                                                # 1.3.5 - Cursor que receberá os comandos SQL.
-        cursor.execute("SELECT maquina_id FROM dash_producao WHERE horario_producao BETWEEN '{}' AND '{}'".format(data_antiga_index, data_nova_index)) # 1.3.6 - Cursor com o comando que filtrará a produção de todas as máquinas da data_antiga (Data início definida pelo usuário) até a data_nova (Data final definida pelo usuário).
-        result = cursor.fetchall()                                                                  # 1.3.7 - Resultado da filtragem realizada anteriormente pelo usuário.
-        lista_producao_index.clear()                                                                # 1.3.8 - Função que limpará a lista antes de adquirir dados novos.
-        for i in result:                                                                            # 1.3.9 - Loop que percorrerá os dados de produção e adicionará na lista de produção.
-            lista_producao_index.append(i[0])                                                       # 1.3.9.1 - Função que adicionará na lista de produção geral o primeiro item da lista retornada do banco.
+        filtraMaquinas('POST', request, maquinas_filtradas)
+
+        adicionaProducaoLista(dataInicial('POST', request, 'data_antiga_index', 'hora_antiga'), dataFinal('POST', request, 'data_nova_index', 'hora_nova'), lista_producao_index)
 
     # 1.4 - DADOS QUE SERÃO JOGADOS PARA O TEMPLATE
     dados = {
