@@ -76,41 +76,34 @@ def gera_pdf_geral(request):
         posicao_linha_hor = 540
         posicao_nome_maquina = 525
         posicao_linha_divisora = 540
-
         if maquinas_filtradas:
             fim_producao = topo-302-(len(maquinas_filtradas)*20)
             for i in maquinas_filtradas:
-                if len(maquinas_filtradas) > 25:
-                    if i == maquinas_filtradas[25]:
+                if len(maquinas_filtradas) > 18:
+                    if i == maquinas_filtradas[18]:
                         posicao_linha_hor = 820
                         posicao_nome_maquina = 805
                         posicao_linha_divisora = 820
                         p.showPage()
-                # LINHA HORIZONTAL SUPERIOR
                 p.line(20, posicao_linha_hor, canto_direito-20, posicao_linha_hor)
-                # LINHA LATERAL VERTICAL - ESQUERDO
-                p.line(20, posicao_linha_divisora-20, 20, posicao_linha_divisora)
-                # STRING DO NOME DA MÁQUINA
                 p.drawString(30, posicao_nome_maquina, '{}'.format(Maquina.objects.get(id=i)))
-                # LINHA VERTICAL CENTRAL
-                p.line(300, posicao_linha_divisora-20, 300, posicao_linha_divisora)
-                # STRING DE PRODUÇÃO
                 p.drawString(430, posicao_nome_maquina, '{}'.format(
                     consultaProducao(
                         dataInicial('GET', request, 'data_antiga_relatorio', 'hora_antiga'),
                         dataFinal('GET', request, 'data_nova_relatorio', 'hora_nova'), 
                         maquina_id=int(i)
                         )))
-                # LINHA LATERAL VERTICAL - DIREITO
-                p.line(canto_direito-20, posicao_linha_divisora-20, canto_direito-20, posicao_linha_divisora)
-                if len(maquinas_filtradas) > 25:
-                    if maquinas_filtradas.index(i) == 24:
-                        # LINHA HORIZONTAL DO ÚLTIMO REGISTRO DA PRIMEIRA PÁGINA
-                        p.line(20, posicao_linha_hor-20, canto_direito-20, posicao_linha_hor-20)
-
                 if maquinas_filtradas.index(i) == len(maquinas_filtradas)-1:
-                    p.line(20, posicao_linha_hor-20, canto_direito-20, posicao_linha_hor-20)
-
+                    p.line(300, posicao_linha_divisora-20, 300, 520)
+                    p.rect(20, fim_producao, 555, 52+(len(maquinas_filtradas*20)), fill=False)
+                    n = range(0,50)
+                    for i in n:
+                        if len(n) > 18:
+                            if i == n[18]:
+                                fim_producao = 820
+                                p.showPage()
+                        p.line(20, fim_producao-20, canto_direito-20, fim_producao-20)
+                        fim_producao = fim_producao-20
 
 
                 posicao_linha_hor = posicao_linha_hor-20
