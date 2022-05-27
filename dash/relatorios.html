@@ -1,0 +1,189 @@
+{% extends '_base.html' %}
+{% load static %}
+{% block content %}
+
+
+    <div class="container-scroller">
+      <!-- partial:../../partials/_sidebar.html -->
+      {% include 'partials/_menu.html' %}
+        <!-- partial -->
+        <!-- INÍCIO BARRA SUPERIOR -->
+
+        <nav class="navbar p-0 fixed-top d-flex flex-row">
+            <div class="navbar-brand-wrapper d-flex d-lg-none align-items-center justify-content-center">
+            <a class="navbar-brand brand-logo-mini" href="index.html"><img src="{% static 'images/logo-mini.svg' %}" alt="logo" /></a>
+            </div>
+            <div class="navbar-menu-wrapper flex-grow d-flex align-items-stretch">
+            <button class="navbar-toggler navbar-toggler align-self-center" type="button" data-toggle="minimize">
+                <span class="mdi mdi-menu"></span>
+            </button>
+            <ul class="navbar-nav w-100">
+                <li class="nav-item w-100">
+                <form class="nav-link mt-2 mt-md-0 d-none d-lg-flex search">
+                    <input type="text" class="form-control" placeholder="Pesquisar máquinas">
+                </form>
+                </li>
+            </ul>
+            
+            <ul class="navbar-nav navbar-nav-right">
+                <a type="button" class="btn btn-outline-warning btn-icon-text" onclick="Refresh()">Atualizar</a>
+            
+            </ul>
+            <button class="navbar-toggler navbar-toggler-right d-lg-none align-self-center" type="button" data-toggle="offcanvas">
+                <span class="mdi mdi-format-line-spacing"></span>
+            </button>
+            </div>
+        </nav>
+        <div class="main-panel">
+          <div class="content-wrapper">
+            <div class="page-header">
+              <h3 class="page-title">Relatórios</h3>
+              <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                  <li class="breadcrumb-item"><a href="#">Charts</a></li>
+                  <li class="breadcrumb-item active" aria-current="page">Chart-js</li>
+                </ol>
+                </div>
+            </nav>
+            
+            <div class="row">
+              
+            </div>
+            
+              <div class="row ">
+                <div class="col-12 grid-margin">
+                  <div class="card">
+                    <div class="card-body">
+                      <div class="table-responsive">
+                        <table class="table">
+                          <thead>
+                            <tr>
+                              <th>
+                                <div class="form-check form-check-muted m-0">
+                                  <label class="form-check-label">
+                                  <i class="input-helper"></i></label>
+                                </div>
+                              </th>
+                              <th style='text-align: center;'> Relatórios </th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <tr>
+                              <td>
+                                <div class="form-check form-check-muted m-0">
+                                  <i class="input-helper mdi mdi-open-in-new"></i></label>
+                                </div>
+                              </td>
+                              <td>
+                                <span style='text-align: center;' class="pl-2">Relatório Geral</span>
+                              </td>
+                              <td style='color: transparent;' >aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa</td>
+                              <td>
+                                <button style='width: 100%;'  type="button" class="btn btn-primary" data-toggle="modal" data-target="#relatorio" data-whatever="@mdo">Falar com @mdo</button>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <div class="form-check form-check-muted m-0">
+                                  <i class="input-helper mdi mdi-open-in-new"></i></label>
+                                </div>
+                              </td>
+                              <td>
+                                <span style='text-align: center;' class="pl-2">Relatório de Produção</span>
+                              </td>
+                              <td></td>
+                              <td>
+                                <button style='width: 100%;' type="button" class="btn btn-success" data-toggle="modal" data-target="#exampleModals" data-whatever="@mdo"><i class="mdi mdi-check btn-icon-append"></i>Selecionar</button>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <div class="form-check form-check-muted m-0">
+                                  <i class="input-helper mdi mdi-open-in-new"></i></label>
+                                </div>
+                              </td>
+                              <td>
+                                <span style='text-align: center;' class="pl-2">Relatório de Paradas</span>
+                              </td>
+                              <td>     </td>
+                              <td>
+                                <button style='width: 100%;' type="button" class="btn btn-success" data-toggle="modal" data-target="#exampleModall" data-whatever="@mdo"><i class="mdi mdi-check btn-icon-append"></i>Selecionar</button>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+
+                <!-- MODAL DO RELATÓRIO GERAL -->
+                <div class="modal fade" id="modal-relatorio-geral" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                  <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Relatório Geral</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                          <span aria-hidden="true">&times;</span>
+                        </button>
+                      </div>
+                      <div class="modal-body">
+                      <span>Selecione as máquinas: </span>
+                      <form action={% url 'gera_pdf_geral' %} method='GET'>
+                      {% csrf_token %}
+                      <div class="row">
+                        <div class="col-md-12">
+                          <div class="form-group">
+                            {% if maquinas %}
+                            {% for maquina in maquinas %}
+                            <div style='float: left; width: 50%;' class="form-check">
+                              <label class="form-check-label">
+                                <input name='filtro_{{maquina.id}}' value={{maquina.id}} type="checkbox" class="form-check-input" checked=""> {{maquina.nome_maquina}} <i class="input-helper"></i></label>
+                            </div>
+                            {% endfor %}
+                            {% endif %}
+                        </div>
+
+                      <div style='padding-top: 150px;'>
+                        <span style=>Selecione o período: </span>
+                        <div class="form-group">
+                          <div style='padding-left: 0;'  class="form-check">
+                            <p>Data Inicial: </p>
+                            <input name='data_antiga_relatorio' style='height: 35px; background-color: #1c1d20; border: none; color: #686868;' id="date" type="date" required><input name='hora_antiga' style='margin-left: 20px; height: 35px; background-color: #1c1d20; border: none; color: #686868;' id="date" type="time" required><br>
+                          </div>
+                          <div style='padding-left: 0;'  class="form-check">
+                            <p>Data Final: </p>
+                            <input name='data_nova_relatorio' style='height: 35px; background-color: #1c1d20; border: none; color: #686868;' id="date" type="date" required><input name='hora_nova' style='margin-left: 20px; height: 35px; background-color: #1c1d20; border: none; color: #686868;' id="date" type="time" required><br><br>
+                          </div>
+                        </div>
+                      </div>
+
+                    </div>
+                    
+
+                    <div class="col-md-12">
+                      <button style='float: right;' class="btn btn-success" ><i class="mdi mdi-download btn-icon-append"></i>Baixar relatório</button>
+                      <button style='float: right; margin-right: 15px;' type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
+                    </div>
+                    </div>
+                  </form>
+                  </div>
+                </div>
+
+
+              </div>
+          <!-- content-wrapper ends -->
+          <!-- partial:../../partials/_footer.html -->
+          
+          {% include 'partials/_footer.html' %}
+          <!-- partial -->
+        </div>
+        <!-- main-panel ends -->
+      </div>
+      <!-- page-body-wrapper ends -->
+    </div>
+
+
+
+{% endblock %}

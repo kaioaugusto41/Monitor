@@ -79,7 +79,7 @@
                               </td>
                               <td style='color: transparent;' >aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa</td>
                               <td>
-                                <button style='width: 100%;' type="button" class="btn btn-success" data-toggle="modal" data-target="#modal-relatorio-geral" data-whatever="@mdo"><i class="mdi mdi-check btn-icon-append"></i>Selecionar</button>
+                                <button style='width: 100%;'  type="button" class="btn btn-primary" data-toggle="modal" data-target="#modal-relatorio-geral" data-whatever="@geral">Selecionar</button>
                               </td>
                             </tr>
                             <tr>
@@ -93,7 +93,7 @@
                               </td>
                               <td></td>
                               <td>
-                                <button style='width: 100%;' type="button" class="btn btn-success" data-toggle="modal" data-target="#exampleModals" data-whatever="@mdo"><i class="mdi mdi-check btn-icon-append"></i>Selecionar</button>
+                                <button style='width: 100%;' type="button" class="btn btn-primary" data-toggle="modal" data-target="#modal-relatorio-producao" data-whatever="@producao">Selecionar</button>
                               </td>
                             </tr>
                             <tr>
@@ -107,7 +107,7 @@
                               </td>
                               <td>     </td>
                               <td>
-                                <button style='width: 100%;' type="button" class="btn btn-success" data-toggle="modal" data-target="#exampleModall" data-whatever="@mdo"><i class="mdi mdi-check btn-icon-append"></i>Selecionar</button>
+                                <button style='width: 100%;' type="button" class="btn btn-primary" data-toggle="modal" data-target="#modal-relatorio-paradas" data-whatever="@paradas">Selecionar</button>
                               </td>
                             </tr>
                           </tbody>
@@ -118,8 +118,9 @@
                 </div>
 
 
-                <!-- MODAL DO RELATÓRIO GERAL -->
-                <div class="modal fade" id="modal-relatorio-geral" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+
+                 <!-- INÍCIO MODAL GERAL -->
+                 <div class="modal fade" id="modal-relatorio-geral" tabindex="-1" role="dialog" aria-labelledby="relatorio" aria-hidden="true">
                   <div class="modal-dialog" role="document">
                     <div class="modal-content">
                       <div class="modal-header">
@@ -129,52 +130,159 @@
                         </button>
                       </div>
                       <div class="modal-body">
-                      <span>Selecione as máquinas: </span>
-                      <form action={% url 'gera_pdf_geral' %} method='GET'>
-                      {% csrf_token %}
-                      <div class="row">
-                        <div class="col-md-12">
-                          <div class="form-group">
-                            {% if maquinas %}
-                            {% for maquina in maquinas %}
-                            <div style='float: left; width: 50%;' class="form-check">
-                              <label class="form-check-label">
+                        <span>Selecione as máquinas: </span>
+                        <form action={% url 'gera_pdf_geral' %} method='GET'>
+                        {% csrf_token %}
+                        <div class="row">
+                          <div class="col-md-12">
+                            <div class="form-group">
+                              {% if maquinas %}
+                              {% for maquina in maquinas %}
+                              <div style='float: left; width: 50%;' class="form-check">
+                                <label class="form-check-label">
                                 <input name='filtro_{{maquina.id}}' value={{maquina.id}} type="checkbox" class="form-check-input" checked=""> {{maquina.nome_maquina}} <i class="input-helper"></i></label>
+                              </div>
+                              {% endfor %}
+                              {% endif %}
                             </div>
-                            {% endfor %}
-                            {% endif %}
-                        </div>
-
-                      <div style='padding-top: 150px;'>
-                        <span style=>Selecione o período: </span>
-                        <div class="form-group">
-                          <div style='padding-left: 0;'  class="form-check">
-                            <p>Data Inicial: </p>
-                            <input name='data_antiga_relatorio' style='height: 35px; background-color: #1c1d20; border: none; color: #686868;' id="date" type="date" required><input name='hora_antiga' style='margin-left: 20px; height: 35px; background-color: #1c1d20; border: none; color: #686868;' id="date" type="time" required><br>
+                            <div style='padding-top: 150px;'>
+                              <span style=>Selecione o período: </span>
+                              <div class="form-group">
+                                <div style='padding-left: 0;'  class="form-check">
+                                  <p>Data Inicial: </p>
+                                  <input name='data_antiga_relatorio' style='height: 35px; background-color: #1c1d20; border: none; color: #686868;' id="date" type="date" required><input name='hora_antiga' style='margin-left: 20px; height: 35px; background-color: #1c1d20; border: none; color: #686868;' id="date" type="time" required><br>
+                                </div>
+                                <div style='padding-left: 0;'  class="form-check">
+                                  <p>Data Final: </p>
+                                  <input name='data_nova_relatorio' style='height: 35px; background-color: #1c1d20; border: none; color: #686868;' id="date" type="date" required><input name='hora_nova' style='margin-left: 20px; height: 35px; background-color: #1c1d20; border: none; color: #686868;' id="date" type="time" required><br><br>
+                                </div>
+                              </div>
+                            </div>
                           </div>
-                          <div style='padding-left: 0;'  class="form-check">
-                            <p>Data Final: </p>
-                            <input name='data_nova_relatorio' style='height: 35px; background-color: #1c1d20; border: none; color: #686868;' id="date" type="date" required><input name='hora_nova' style='margin-left: 20px; height: 35px; background-color: #1c1d20; border: none; color: #686868;' id="date" type="time" required><br><br>
-                          </div>
                         </div>
+                        <div class="col-md-12">
+                          <button style='float: right;' class="btn btn-success" ><i class="mdi mdi-download btn-icon-append"></i>Baixar relatório</button>
+                          <button style='float: right; margin-right: 15px;' type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
+                        </div>
+                        </form>
                       </div>
-
                     </div>
-                    
-
-                    <div class="col-md-12">
-                      <button style='float: right;' class="btn btn-success" ><i class="mdi mdi-download btn-icon-append"></i>Baixar relatório</button>
-                      <button style='float: right; margin-right: 15px;' type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
-                    </div>
-                    </div>
-                  </form>
                   </div>
                 </div>
+                <!-- FIM MODAL GERAL-->
+
+                <!-- INÍCIO MODAL PRODUÇÃO -->
+                <div class="modal fade" id="modal-relatorio-producao" tabindex="-1" role="dialog" aria-labelledby="relatorio" aria-hidden="true">
+                  <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Relatório de Produção</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                          <span aria-hidden="true">&times;</span>
+                        </button>
+                      </div>
+                      <div class="modal-body">
+                        <span>Selecione as máquinas: </span>
+                        <form action={% url 'gera_pdf_producao' %} method='GET'>
+                        {% csrf_token %}
+                        <div class="row">
+                          <div class="col-md-12">
+                            <div class="form-group">
+                              {% if maquinas %}
+                              {% for maquina in maquinas %}
+                              <div style='float: left; width: 50%;' class="form-check">
+                                <label class="form-check-label">
+                                <input name='filtro_{{maquina.id}}' value={{maquina.id}} type="checkbox" class="form-check-input" checked=""> {{maquina.nome_maquina}} <i class="input-helper"></i></label>
+                              </div>
+                              {% endfor %}
+                              {% endif %}
+                            </div>
+                            <div style='padding-top: 150px;'>
+                              <span style=>Selecione o período: </span>
+                              <div class="form-group">
+                                <div style='padding-left: 0;'  class="form-check">
+                                  <p>Data Inicial: </p>
+                                  <input name='data_antiga_relatorio' style='height: 35px; background-color: #1c1d20; border: none; color: #686868;' id="date" type="date" required><input name='hora_antiga' style='margin-left: 20px; height: 35px; background-color: #1c1d20; border: none; color: #686868;' id="date" type="time" required><br>
+                                </div>
+                                <div style='padding-left: 0;'  class="form-check">
+                                  <p>Data Final: </p>
+                                  <input name='data_nova_relatorio' style='height: 35px; background-color: #1c1d20; border: none; color: #686868;' id="date" type="date" required><input name='hora_nova' style='margin-left: 20px; height: 35px; background-color: #1c1d20; border: none; color: #686868;' id="date" type="time" required><br><br>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="col-md-12">
+                          <button style='float: right;' class="btn btn-success" ><i class="mdi mdi-download btn-icon-append"></i>Baixar relatório</button>
+                          <button style='float: right; margin-right: 15px;' type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
+                        </div>
+                        </form>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <!-- FIM MODAL PRODUÇÃO-->
+
+                <!-- INÍCIO MODAL PARADAS -->
+                <div class="modal fade" id="modal-relatorio-paradas" tabindex="-1" role="dialog" aria-labelledby="relatorio" aria-hidden="true">
+                  <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Relatório de Paradas</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                          <span aria-hidden="true">&times;</span>
+                        </button>
+                      </div>
+                      <div class="modal-body">
+                        <span>Selecione as máquinas: </span>
+                        <form action={% url 'gera_pdf_paradas' %} method='GET'>
+                        {% csrf_token %}
+                        <div class="row">
+                          <div class="col-md-12">
+                            <div class="form-group">
+                              {% if maquinas %}
+                              {% for maquina in maquinas %}
+                              <div style='float: left; width: 50%;' class="form-check">
+                                <label class="form-check-label">
+                                <input name='filtro_{{maquina.id}}' value={{maquina.id}} type="checkbox" class="form-check-input" checked=""> {{maquina.nome_maquina}} <i class="input-helper"></i></label>
+                              </div>
+                              {% endfor %}
+                              {% endif %}
+                            </div>
+                            <div style='padding-top: 150px;'>
+                              <span style=>Selecione o período: </span>
+                              <div class="form-group">
+                                <div style='padding-left: 0;'  class="form-check">
+                                  <p>Data Inicial: </p>
+                                  <input name='data_antiga_relatorio' style='height: 35px; background-color: #1c1d20; border: none; color: #686868;' id="date" type="date" required><input name='hora_antiga' style='margin-left: 20px; height: 35px; background-color: #1c1d20; border: none; color: #686868;' id="date" type="time" required><br>
+                                </div>
+                                <div style='padding-left: 0;'  class="form-check">
+                                  <p>Data Final: </p>
+                                  <input name='data_nova_relatorio' style='height: 35px; background-color: #1c1d20; border: none; color: #686868;' id="date" type="date" required><input name='hora_nova' style='margin-left: 20px; height: 35px; background-color: #1c1d20; border: none; color: #686868;' id="date" type="time" required><br><br>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="col-md-12">
+                          <button style='float: right;' class="btn btn-success" ><i class="mdi mdi-download btn-icon-append"></i>Baixar relatório</button>
+                          <button style='float: right; margin-right: 15px;' type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
+                        </div>
+                        </form>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <!-- FIM MODAL PARADAS-->
 
 
-              </div>
+
+
+
           <!-- content-wrapper ends -->
           <!-- partial:../../partials/_footer.html -->
+
+
           
           {% include 'partials/_footer.html' %}
           <!-- partial -->

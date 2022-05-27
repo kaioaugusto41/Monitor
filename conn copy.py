@@ -19,6 +19,6 @@ ultimo_id = int(cursor.fetchall()[0][0])
 _id = ultimo_id+1
 
 # COMANDO QUE ADICIONA A PRODUÇÃO NA TABELA DE PRODUÇÃO DA MÁQUINA 1
-cursor.execute("INSERT INTO dash_paradas VALUES({}, '{}', {}, {})".format(_id, data_atual, 7, 1))
+cursor.execute("INSERT INTO dash_paradas VALUES({}, '{}', {}, {})".format(_id, data_atual, 1, 1))
 connection.commit()
 time.sleep(2)
