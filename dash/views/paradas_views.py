@@ -37,11 +37,11 @@ def paradas(request):
     data_nova_paradas = str(datetime.now()) [:19]                                                   # 1.2.3 - Data nova sem filtro.
     
     adicionaParadasListas_(data_antiga_paradas, data_nova_paradas, lista_paradas_maquina1, 1)
-    adicionaParadasListas_(data_antiga_paradas, data_nova_paradas, lista_paradas_maquina1, 3)
-    adicionaParadasListas_(data_antiga_paradas, data_nova_paradas, lista_paradas_maquina1, 4)
-    adicionaParadasListas_(data_antiga_paradas, data_nova_paradas, lista_paradas_maquina1, 5)
-    adicionaParadasListas_(data_antiga_paradas, data_nova_paradas, lista_paradas_maquina1, 6)
-    adicionaParadasListas_(data_antiga_paradas, data_nova_paradas, lista_paradas_maquina1, 7)
+    adicionaParadasListas_(data_antiga_paradas, data_nova_paradas, lista_paradas_maquina3, 3)
+    adicionaParadasListas_(data_antiga_paradas, data_nova_paradas, lista_paradas_maquina4, 4)
+    adicionaParadasListas_(data_antiga_paradas, data_nova_paradas, lista_paradas_maquina5, 5)
+    adicionaParadasListas_(data_antiga_paradas, data_nova_paradas, lista_paradas_maquina6, 6)
+    adicionaParadasListas_(data_antiga_paradas, data_nova_paradas, lista_paradas_maquina7, 7)
 
     maquinas_filtradas = []                                                                         # 1.2.15 - Lista de ids das máquinas a serem exibidas na página Paradas (Sem filtro).
     for maquina in Maquina.objects.values('id'):                                                    # 1.2.16 - Loop que percorrerá todas as máquinas cadastradas no banco...
@@ -49,16 +49,15 @@ def paradas(request):
     
     # 1.3 - PARADAS DAS MÁQUINAS COM FILTRO DE DATA E HORÁRIO (DEFINIDA PELO USUÁRIO)
     if request.method == 'POST':                                                                    # 1.3.1 - Se houver uma requisição do tipo POST na página...
-        
         maquinas_filtradas = []                                                                     # 1.3.2 - Lista de máquinas com filtro...
         filtraMaquinas('POST', request, maquinas_filtradas)                                      # 1.3.3.2.1 - Adicionando os ids a serem mostrados na lista (maquinas_filtradas)
 
         adicionaParadasListas_(dataInicial('POST', request, 'data_antiga_paradas', 'hora_antiga'), dataFinal('POST', request, 'data_nova_paradas', 'hora_nova'), lista_paradas_maquina1, 1)
-        adicionaParadasListas_(dataInicial('POST', request, 'data_antiga_paradas', 'hora_antiga'), dataFinal('POST', request, 'data_nova_paradas', 'hora_nova'), lista_paradas_maquina1, 3)
-        adicionaParadasListas_(dataInicial('POST', request, 'data_antiga_paradas', 'hora_antiga'), dataFinal('POST', request, 'data_nova_paradas', 'hora_nova'), lista_paradas_maquina1, 4)
-        adicionaParadasListas_(dataInicial('POST', request, 'data_antiga_paradas', 'hora_antiga'), dataFinal('POST', request, 'data_nova_paradas', 'hora_nova'), lista_paradas_maquina1, 5)
-        adicionaParadasListas_(dataInicial('POST', request, 'data_antiga_paradas', 'hora_antiga'), dataFinal('POST', request, 'data_nova_paradas', 'hora_nova'), lista_paradas_maquina1, 6)
-        adicionaParadasListas_(dataInicial('POST', request, 'data_antiga_paradas', 'hora_antiga'), dataFinal('POST', request, 'data_nova_paradas', 'hora_nova'), lista_paradas_maquina1, 7)
+        adicionaParadasListas_(dataInicial('POST', request, 'data_antiga_paradas', 'hora_antiga'), dataFinal('POST', request, 'data_nova_paradas', 'hora_nova'), lista_paradas_maquina3, 3)
+        adicionaParadasListas_(dataInicial('POST', request, 'data_antiga_paradas', 'hora_antiga'), dataFinal('POST', request, 'data_nova_paradas', 'hora_nova'), lista_paradas_maquina4, 4)
+        adicionaParadasListas_(dataInicial('POST', request, 'data_antiga_paradas', 'hora_antiga'), dataFinal('POST', request, 'data_nova_paradas', 'hora_nova'), lista_paradas_maquina5, 5)
+        adicionaParadasListas_(dataInicial('POST', request, 'data_antiga_paradas', 'hora_antiga'), dataFinal('POST', request, 'data_nova_paradas', 'hora_nova'), lista_paradas_maquina6, 6)
+        adicionaParadasListas_(dataInicial('POST', request, 'data_antiga_paradas', 'hora_antiga'), dataFinal('POST', request, 'data_nova_paradas', 'hora_nova'), lista_paradas_maquina7, 7)
     
     # 1.4 - DADOS QUE SERÃO JOGADOS PARA O TEMPLATE
     dados = {

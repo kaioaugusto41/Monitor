@@ -8,6 +8,7 @@ from django.http import HttpResponse
 
 from dash.views.funcoes.consultas_banco import adicionaProducaoLista
 from dash.views.funcoes.filtra_maquinas import filtraMaquinas
+from dash.views.funcoes.pega_datas import dataFinal, dataInicial
 
 
 # 1 - PÁGINA PRODUÇÃO (MENÚ)
@@ -30,7 +31,12 @@ def producao(request):
         
         filtraMaquinas('POST', request, maquinas_filtradas)
 
+        data_antiga_producao = dataInicial('POST', request, 'data_antiga_producao', 'hora_antiga')
+        data_nova_producao = dataFinal('POST', request, 'data_nova_producao', 'hora_nova')
+        
+        adicionaProducaoLista(data_antiga_producao, data_nova_producao, lista_producao_producao)
 
+        
     # 1.3 - DADOS QUE SERÃO JOGADOS PARA O TEMPLATE
     dados = {
         

@@ -2,6 +2,7 @@ from dash.models import Maquina
 
 def filtraMaquinas(metodo, request, lista_maquinas_filtradas):
     metodo = metodo
+    lista_maquinas_filtradas.clear()
     for maquina in Maquina.objects.values('id'):                                                # 4.3.3 - Loop que percorrerá todas as máquinas cadastradas no banco...
         if metodo == 'POST':
             maquina_filtrada = request.POST.get('filtro_{}'.format(maquina['id']), False)           # 4.3.3.1 - Bucando os valores filtrados no index.
