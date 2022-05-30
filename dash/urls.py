@@ -9,6 +9,8 @@ from dash.views import (
     paradas_views, 
     maquina_views, 
     relatorios_views,
+    motivos_paradas_views,
+    suporte_views
  )
 import dash
 
@@ -22,4 +24,6 @@ urlpatterns = [
     path('gera_pdf_geral', pdf_geral_views.gera_pdf_geral, name='gera_pdf_geral'),
     path('gera_pdf_producao', pdf_producao_views.gera_pdf_producao, name='gera_pdf_producao'),
     path('gera_pdf_paradas', pdf_paradas_views.gera_pdf_paradas, name='gera_pdf_paradas'),
+    path('motivos_paradas', motivos_paradas_views.motivos_paradas, name='motivos_paradas'),
+    path('suporte', suporte_views.suporte, name='suporte')
 ]

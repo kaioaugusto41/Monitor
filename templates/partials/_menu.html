@@ -109,31 +109,31 @@
       </a>
     </li>
     <li class="nav-item menu-items">
-      <a class="nav-link" href="pages/tables/basic-table.html">
+      <a class="nav-link" href={% url 'motivos_paradas' %}>
         <span class="menu-icon">
           <i class="mdi mdi-stop-circle-outline"></i>
         </span>
         <span class="menu-title">Motivos de paradas</span>
       </a>
     </li>
-    <li class="nav-item menu-items">
+    {% comment %} <li class="nav-item menu-items">
       <a class="nav-link" href="pages/tables/basic-table.html">
         <span class="menu-icon">
           <i class="mdi mdi-tag-multiple"></i>
         </span>
         <span class="menu-title">Produtos</span>
       </a>
-    </li>
-    <li class="nav-item menu-items">
+    </li> {% endcomment %}
+    {% comment %} <li class="nav-item menu-items">
       <a class="nav-link" href="pages/charts/chartjs.html">
         <span class="menu-icon">
           <i class="mdi mdi-settings"></i>
         </span>
         <span class="menu-title">Configurações</span>
       </a>
-    </li>
+    </li> {% endcomment %}
     <li class="nav-item menu-items">
-      <a class="nav-link" href="pages/icons/mdi.html">
+      <a class="nav-link" href={% url 'suporte' %}>
         <span class="menu-icon">
           <i class="mdi mdi-headset"></i>
         </span>
