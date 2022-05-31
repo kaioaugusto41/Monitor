@@ -14,13 +14,34 @@
 
       if ($("#{{maquina.id}}").length) {
         var areaData = {
-          labels: ["Paypal", "Stripe","Cash"],
+          labels: [
+          {% for parada in paradas_tipos %}
+            "{{parada}}",
+          {% endfor %}
+          ],
           datasets: [{
-              data: [55, 25, 10],
+            {% if maquina.id == 1 %}
+              data: [{{parada_motivo1_maquina1}}, {{parada_motivo2_maquina1}}, {{parada_motivo3_maquina1}}, {{parada_motivo4_maquina1}}, {{parada_motivo5_maquina1}}],
+            {% elif maquina.id == 3 %}
+              data: [{{parada_motivo1_maquina3}}, {{parada_motivo2_maquina3}}, {{parada_motivo3_maquina3}}, {{parada_motivo4_maquina3}}, {{parada_motivo5_maquina3}}],
+            {% elif maquina.id == 4 %}
+              data: [{{parada_motivo1_maquina4}}, {{parada_motivo2_maquina4}}, {{parada_motivo3_maquina4}}, {{parada_motivo4_maquina4}}, {{parada_motivo5_maquina4}}],  
+            {% elif maquina.id == 5 %}
+              data: [{{parada_motivo1_maquina5}}, {{parada_motivo2_maquina5}}, {{parada_motivo3_maquina5}}, {{parada_motivo4_maquina5}}, {{parada_motivo5_maquina5}}], 
+            {% elif maquina.id == 6 %}
+              data: [{{parada_motivo1_maquina6}}, {{parada_motivo2_maquina6}}, {{parada_motivo3_maquina6}}, {{parada_motivo4_maquina6}}, {{parada_motivo5_maquina6}}],  
+            {% elif maquina.id == 7 %}
+              data: [{{parada_motivo1_maquina7}}, {{parada_motivo2_maquina7}}, {{parada_motivo3_maquina7}}, {{parada_motivo4_maquina7}}, {{parada_motivo5_maquina7}}],  
+            {% endif %}  
               backgroundColor: [
-                "#111111","#00d25b","#ffab00"
-              ]
-            }
+              'rgba(255, 99, 132, 0.5)',
+              'rgba(54, 162, 235, 0.5)',
+              'rgba(255, 206, 86, 0.5)',
+              'rgba(75, 192, 192, 0.5)',
+              'rgba(153, 102, 255, 0.5)',
+              'rgba(255, 159, 64, 0.5)'
+            ],
+          }
           ]
         };
         var areaOptions = {
@@ -52,8 +73,19 @@
             ctx.textAlign = 'left';
             ctx.textBaseline = "middle";
             ctx.fillStyle = "#ffffff";
-        
-            var text = "6", 
+            {% if maquina.id == 1 %}
+            var text = "{{paradas_maquina1}}",
+            {% elif maquina.id == 3 %}
+            var text = "{{paradas_maquina3}}",
+            {% elif maquina.id == 4 %}
+            var text = "{{paradas_maquina4}}",
+            {% elif maquina.id == 5 %}
+            var text = "{{paradas_maquina5}}",
+            {% elif maquina.id == 6 %}
+            var text = "{{paradas_maquina6}}",
+            {% elif maquina.id == 7 %}
+            var text = "{{paradas_maquina7}}",
+            {% endif %} 
                 textX = Math.round((width - ctx.measureText(text).width) / 2),
                 textY = height / 2.4;
         

@@ -31,7 +31,7 @@ class Paradas(models.Model):
     horario_parada = models.DateTimeField()
 
     def __str__(self):
-        return self.parada_tipo
+        return str(self.parada_tipo)
 
 class Produtos(models.Model):
     nome_produto = models.CharField(max_length=150)
