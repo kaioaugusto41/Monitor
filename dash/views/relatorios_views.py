@@ -18,11 +18,11 @@ def relatorios(request):
 
         # 1.6.2 - INÍCIO DAS MÁQUINAS NA PÁGINA GERAL
         'maquina1': Maquina.objects.get(id=1),                                                      # 1.6.2.1 - Buscando o nome da máquina 1 no banco.
-        'maquina3': Maquina.objects.get(id=3),                                                      # 1.6.2.2 - Buscando o nome da máquina 3 no banco.
-        'maquina4': Maquina.objects.get(id=4),                                                      # 1.6.2.3 - Buscando o nome da máquina 4 no banco.
-        'maquina5': Maquina.objects.get(id=5),                                                      # 1.6.2.4 - Buscando o nome da máquina 5 no banco.
-        'maquina6': Maquina.objects.get(id=6),                                                      # 1.6.2.5 - Buscando o nome da máquina 6 no banco.
-        'maquina7': Maquina.objects.get(id=7),                                                      # 1.6.2.6 - Buscando o nome da máquina 7 no banco.
+        'maquina2': Maquina.objects.get(id=2),                                                      # 1.6.2.2 - Buscando o nome da máquina 3 no banco.
+        'maquina3': Maquina.objects.get(id=3),                                                      # 1.6.2.3 - Buscando o nome da máquina 4 no banco.
+        'maquina4': Maquina.objects.get(id=4),                                                      # 1.6.2.4 - Buscando o nome da máquina 5 no banco.
+        'maquina5': Maquina.objects.get(id=5),                                                      # 1.6.2.5 - Buscando o nome da máquina 6 no banco.
+        'maquina6': Maquina.objects.get(id=6),                                                      # 1.6.2.6 - Buscando o nome da máquina 7 no banco.
         # @MQGERAL1#
         #'maquina5': Maquina.objects.get(id=id da máquina nova),                                    # 1.6.2.7 - Buscando o nome da máquina 5 no banco.
       

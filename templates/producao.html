@@ -127,6 +127,8 @@
                               <td style='text-align: center;'> {{maquina.id}} </td>
                               {% if maquina.id == 1 %}
                               <td style='text-align: center;'> {{producao_maquina1}} </td>
+                              {% elif maquina.id == 2 %}
+                              <td style='text-align: center;'> {{producao_maquina2}} </td>
                               {% elif maquina.id == 3 %}
                               <td style='text-align: center;'> {{producao_maquina3}} </td>
                               {% elif maquina.id == 4 %}
@@ -135,8 +137,6 @@
                               <td style='text-align: center;'> {{producao_maquina5}} </td>
                               {% elif maquina.id == 6 %}
                               <td style='text-align: center;'> {{producao_maquina6}} </td>
-                              {% elif maquina.id == 7 %}
-                              <td style='text-align: center;'> {{producao_maquina7}} </td>
                               <!-- @MQPRODUCAO2# -->
                               <!-- { elif maquina.id == 7 } -->
                               <!-- <td style='text-align: center;'> {producao_maquina7} </td> -->

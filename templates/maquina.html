@@ -84,6 +84,8 @@
                           <div class="d-flex d-sm-block d-md-flex align-items-center">
                             {% if maquina.id == 1%}
                             <h2 class="mb-0">{{producao_maquina1}}</h2>
+                            {% elif maquina.id == 2%}
+                            <h2 class="mb-0">{{producao_maquina2}}</h2>
                             {% elif maquina.id == 3%}
                             <h2 class="mb-0">{{producao_maquina3}}</h2>
                             {% elif maquina.id == 4%}
@@ -92,8 +94,6 @@
                             <h2 class="mb-0">{{producao_maquina5}}</h2>
                             {% elif maquina.id == 6%}
                             <h2 class="mb-0">{{producao_maquina6}}</h2>
-                            {% elif maquina.id == 7%}
-                            <h2 class="mb-0">{{producao_maquina7}}</h2>
                             <!-- @MQMAQUINA4# -->
                             <!-- { elif maquina.id == id da máquina nova } -->
                             <!-- <h2 class="mb-0">{producao_maquina(id da máquina nova)}</h2> -->
@@ -117,6 +117,8 @@
                           <div class="d-flex d-sm-block d-md-flex align-items-center">
                             {% if maquina.id == 1%}
                             <h2 class="mb-0">{{paradas_maquina1}}</h2>
+                            {% elif maquina.id == 2%}
+                            <h2 class="mb-0">{{paradas_maquina2}}</h2>
                             {% elif maquina.id == 3%}
                             <h2 class="mb-0">{{paradas_maquina3}}</h2>
                             {% elif maquina.id == 4%}
@@ -125,8 +127,6 @@
                             <h2 class="mb-0">{{paradas_maquina5}}</h2>
                             {% elif maquina.id == 6%}
                             <h2 class="mb-0">{{paradas_maquina6}}</h2>
-                            {% elif maquina.id == 7%}
-                            <h2 class="mb-0">{{paradas_maquina7}}</h2>
                             {% endif %}
                           </div>
                           <h6 class="text-muted font-weight-normal">Atualizado {{ultima_atualizacao}}</h6>

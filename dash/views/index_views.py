@@ -1,3 +1,4 @@
+# IMPORTAÇÕES DE BIBLIOTECAS E MÓDULOS
 from django.shortcuts import get_object_or_404, render
 from dash.models import Maquina, Paradas_tipos
 from datetime import datetime
@@ -11,136 +12,182 @@ from .funcoes.renomeia_maquinas import renomeiaMaquina
 from .funcoes.consultas_banco import adicionaParadasListas_, consultaProducao, adicionaProducaoLista
 from .funcoes.ordenaLista import ordenaLista
 
+
+# FUNÇÃO RESPONSÁVEL PELO BACKEND DA PÁGINA INDEX
 def index(request):
 
-    # 1.1 - LISTA DE PARADAS POR MÁQUINA
-    lista_paradas_maquina1 = []                                                                     # 1.1.1 - Contém todas as paradas da máquina 1
-    lista_paradas_maquina3 = []                                                                     # 1.1.2 - Contém todas as paradas da máquina 3
-    lista_paradas_maquina4 = []                                                                     # 1.1.4 - Contém todas as paradas da máquina 4
-    lista_paradas_maquina5 = []                                                                     # 1.1.5 - Contém todas as paradas da máquina 5
-    lista_paradas_maquina6 = []                                                                     # 1.1.6 - Contém todas as paradas da máquina 7
-    lista_paradas_maquina7 = []                                                                     # 1.1.7 - Contém todas as paradas da máquina 7
-    # @MQPARADAS1#
-    # lista_paradas_maquina(id da máquina nova) = []                                                                   
+    # 1 - Lista de paradas de cada máquina.
+    lista_paradas_maquina1 = []                                                                     
+    lista_paradas_maquina2 = []                                                                     
+    lista_paradas_maquina3 = []                                                                     
+    lista_paradas_maquina4 = []                                                                     
+    lista_paradas_maquina5 = []                                                                     
+    lista_paradas_maquina6 = []
+    ####################################################                                                                     
+    # @MQPARADAS1#                                     #
+    # lista_paradas_maquina(id da máquina nova) = []   #                                                                
+    ####################################################
 
+
+    # 2 -  Funções responsáveis por ordenar as listas de paradas das máquinas.
     ordenaLista(lista_paradas_maquina1)
+    ordenaLista(lista_paradas_maquina2)
     ordenaLista(lista_paradas_maquina3)
     ordenaLista(lista_paradas_maquina4)
     ordenaLista(lista_paradas_maquina5)
     ordenaLista(lista_paradas_maquina6)
-    ordenaLista(lista_paradas_maquina7)
+    ####################################################                                                                     
+    # @MQPARADAS1#                                     #
+    # ordenaLista(lista_paradas_maquina(id da máq.))   #                                                                
+    ####################################################
 
-    # 1.1 - REQUISIÇÃO DA EDIÇÃO DOS NOMES DAS MÁQUINAS 
-    if request.method == 'GET':                                                                     # 1.1.1 - Se houver uma requisição do tipo GET na página...
+
+    # 3 - Quando houver uma requisição do tipo GET chama a função que renomeia a máquina. 
+    if request.method == 'GET':                                                                     
         renomeiaMaquina(request, 'nome_maquina_antigo',  'nome_maquina_novo')
   
 
-    # 1.2 - PRODUÇÃO DAS MÁQUINAS SEM FILTRO (PADRÃO)
-    lista_producao_index = []                                                                       # 1.2.1 - Lista que contém todas as produções de todas as máquinas.
-    data_antiga_index = str(datetime.now())[:11] + '00:00:01'                                       # 1.2.2 - Data antiga sem filtro.
-    data_nova_index = str(datetime.now())[:19]                                                      # 1.2.3 - Data atual sem filtro.
+    # 4 - Lista de produção da página INDEX sem filtro de período.
+    lista_producao_index = []                                                                       
+    
+
+    # 5 - Datas padrões ao carregar o site, sem filtro (00:00 do dia atual ao horário atual).
+    data_antiga_index = str(datetime.now())[:11] + '00:00:01'                                       
+    data_nova_index = str(datetime.now())[:19]
+
+
+    # 6 - Função que adiciona a produção total no período das datas padrões na lista de produção do tópico #4.                                                     
     adicionaProducaoLista(data_antiga_index, data_nova_index, lista_producao_index)
     
+
+    # 7 - Função que adiciona as paradas na lista de cada máquina no no tópico #1.
     adicionaParadasListas_(data_antiga_index, data_nova_index, lista_paradas_maquina1, 1)
+    adicionaParadasListas_(data_antiga_index, data_nova_index, lista_paradas_maquina2, 2)
     adicionaParadasListas_(data_antiga_index, data_nova_index, lista_paradas_maquina3, 3)
     adicionaParadasListas_(data_antiga_index, data_nova_index, lista_paradas_maquina4, 4)
     adicionaParadasListas_(data_antiga_index, data_nova_index, lista_paradas_maquina5, 5)
     adicionaParadasListas_(data_antiga_index, data_nova_index, lista_paradas_maquina6, 6)
-    adicionaParadasListas_(data_antiga_index, data_nova_index, lista_paradas_maquina7, 7)
 
-    maquinas_filtradas = []                                                                         # 1.2.9 - Lista de ids das máquinas a serem exibidas na página inicial (Sem filtro).
-    for maquina in Maquina.objects.values('id'):                                                    # 1.2.10 - Loop que percorrerá todas as máquinas cadastradas no banco...
-        maquinas_filtradas.append(maquina['id'])                                                    # 1.2.10.1 - Adicionando cada máquina cadastrada percorrida na lista acima (maquinas_filtradas)
 
-    # 1.3 - PRODUÇÃO DAS MÁQUINAS COM FILTRO DE DATA E HORÁRIO (DEFINIDA PELO USUÁRIO)
-    if request.method == 'POST':                                                                    # 1.3.1 - Se houver uma requisição do tipo POST na página...
-        maquinas_filtradas = []                                                                     # 1.3.2 - Lista de máquinas com filtro...
+    # 8 - Lista de máquinas a serem exibidas sem filtro.
+    maquinas_filtradas = []                                                                         
+    
+
+    # 9 - Loop que percorre e adiciona todas os ids das máquinas do banco na lista do tópico #8
+    for maquina in Maquina.objects.values('id'):                                                    
+        maquinas_filtradas.append(maquina['id'])                                                    
+
+
+    # 10 - Se houver uma requisição do tipo POST...
+    if request.method == 'POST':
+
+        # 11 - Lista de máquinas a serem exibidas com filtro.                                                                    
+        maquinas_filtradas = []
+
+        # 12 - Função que filtra as máquinas selecionadas no template.                                                                     
         filtraMaquinas('POST', request, maquinas_filtradas)
 
+        # 13 - Função que adiciona a produção do período filtrado na lista de produção do tópico #4.
         adicionaProducaoLista(dataInicial('POST', request, 'data_antiga_index', 'hora_antiga'), dataFinal('POST', request, 'data_nova_index', 'hora_nova'), lista_producao_index)
+        
+        # 14 - Função que adiciona as paradas do período filtrado nas listas de paradas do tópico #1.
         adicionaParadasListas_(dataInicial('POST', request, 'data_antiga_index', 'hora_antiga'), dataFinal('POST', request, 'data_nova_index', 'hora_nova'), lista_paradas_maquina1, 1)
+        adicionaParadasListas_(dataInicial('POST', request, 'data_antiga_index', 'hora_antiga'), dataFinal('POST', request, 'data_nova_index', 'hora_nova'), lista_paradas_maquina2, 2)
         adicionaParadasListas_(dataInicial('POST', request, 'data_antiga_index', 'hora_antiga'), dataFinal('POST', request, 'data_nova_index', 'hora_nova'), lista_paradas_maquina3, 3)
         adicionaParadasListas_(dataInicial('POST', request, 'data_antiga_index', 'hora_antiga'), dataFinal('POST', request, 'data_nova_index', 'hora_nova'), lista_paradas_maquina4, 4)
         adicionaParadasListas_(dataInicial('POST', request, 'data_antiga_index', 'hora_antiga'), dataFinal('POST', request, 'data_nova_index', 'hora_nova'), lista_paradas_maquina5, 5)
         adicionaParadasListas_(dataInicial('POST', request, 'data_antiga_index', 'hora_antiga'), dataFinal('POST', request, 'data_nova_index', 'hora_nova'), lista_paradas_maquina6, 6)
-        adicionaParadasListas_(dataInicial('POST', request, 'data_antiga_index', 'hora_antiga'), dataFinal('POST', request, 'data_nova_index', 'hora_nova'), lista_paradas_maquina7, 7)
 
-    # 1.4 - DADOS QUE SERÃO JOGADOS PARA O TEMPLATE
+
+    # 15 - Dados que serão exibidos no template, na página Index.html.
     dados = {
 
-        # MÁQUINAS QUE SERÃO MOSTRADAS SEM FILTRO (TODAS)
+        # 16 - Variável: Todas as máquinas.
         'maquinas': Maquina.objects.all(),
 
+        # 17 - Variável: Todos os tipos de paradas.
         'paradas_tipos': Paradas_tipos.objects.all(),
         
-        # MÁQUINAS QUE SERÃO MOSTRADAS COM FILTRO (AS QUE O USUÁRIO SELECIONAR APENAS)
-        'maquinas_filtradas': Maquina.objects.filter(pk__in=maquinas_filtradas),                    # 1.4.1 - Comando que busca todas as máquinas cadastradas no banco.
+        # 18 - Variável: Máquinas com ou sem filtro.
+        'maquinas_filtradas': Maquina.objects.filter(pk__in=maquinas_filtradas),  
 
-        #INÍCIO DADOS DE PRODUÇÃO DAS MÁQUINAS NA PÁGINA INDEX
-        'producao_maquina1': lista_producao_index.count(1),                                         # 1.4.2 - Conta quantas peças foram produzidas no período filtrado na máquina com o ID 1
-        'producao_maquina3': lista_producao_index.count(3),                                         # 1.4.3 - Conta quantas peças foram produzidas no período filtrado na máquina com o ID 3
-        'producao_maquina4': lista_producao_index.count(4),                                         # 1.4.4 - Conta quantas peças foram produzidas no período filtrado na máquina com o ID 4
-        'producao_maquina5': lista_producao_index.count(5),                                         # 1.4.5 - Conta quantas peças foram produzidas no período filtrado na máquina com o ID 5
-        'producao_maquina6': lista_producao_index.count(6),                                         # 1.4.6 - Conta quantas peças foram produzidas no período filtrado na máquina com o ID 6
-        'producao_maquina7': lista_producao_index.count(7),                                         # 1.4.7 - Conta quantas peças foram produzidas no período filtrado na máquina com o ID 7      
-        # @PMINDEX2#
-        #'producao_maquina8': lista_producao_index.count(id da máquina nova),                       # 1.4.8 - Conta quantas peças foram produzidas no período filtrado na máquina com o ID 8
-        
 
-        # 1.4.1 - INÍCIO DADOS DE PRODUÇÃO DAS MÁQUINAS NA PÁGINA PRODUÇÃO
-        'paradas_maquina1': len(lista_paradas_maquina1),                                            # 1.4.1.1 - Variável que conterá a quantidade de paradas da máquina 1.
-        'paradas_maquina3': len(lista_paradas_maquina3),                                            # 1.4.1.2 - Variável que conterá a quantidade de paradas da máquina 3.
-        'paradas_maquina4': len(lista_paradas_maquina4),                                            # 1.4.1.3 - Variável que conterá a quantidade de paradas da máquina 4.
-        'paradas_maquina5': len(lista_paradas_maquina5),                                            # 1.4.1.4 - Variável que conterá a quantidade de paradas da máquina 5.
-        'paradas_maquina6': len(lista_paradas_maquina6),                                            # 1.4.1.5 - Variável que conterá a quantidade de paradas da máquina 6.
-        'paradas_maquina7': len(lista_paradas_maquina7),                                            # 1.4.1.6 - Variável que conterá a quantidade de paradas da máquina 7.
-        # @MQPARADAS7#
-        #'paradas_maquina(id)': len(lista_paradas_maquina5),
+        # 19 - Variáveis: Variável contendo a quantidade de repetição do id de cada máquina na lista de produção total.
+        'producao_maquina1': lista_producao_index.count(1),                                         
+        'producao_maquina2': lista_producao_index.count(2),                                         
+        'producao_maquina3': lista_producao_index.count(3),                                         
+        'producao_maquina4': lista_producao_index.count(4),                                         
+        'producao_maquina5': lista_producao_index.count(5),                                         
+        'producao_maquina6': lista_producao_index.count(6),
+        ########################################################################                                              
+        # @PMINDEX2#                                                           #
+        #'producao_maquina8': lista_producao_index.count(id da máquina nova),  #                     
+        ########################################################################
 
-        # 1.4.2 - INÍCIO DOS MOTIVOS DE PARADAS MÁQUINA 1
-        'parada_motivo1_maquina1': int(lista_paradas_maquina1.count(1)),                                 # 1.4.2.1 - Variável que conterá a quantidade de paradas do motivo 1 na máquina 1.
-        'parada_motivo2_maquina1': int(lista_paradas_maquina1.count(2)),                                 # 1.4.2.2 - Variável que conterá a quantidade de paradas do motivo 2 na máquina 1.
-        'parada_motivo3_maquina1': int(lista_paradas_maquina1.count(3)),                                 # 1.4.2.3 - Variável que conterá a quantidade de paradas do motivo 3 na máquina 1.
-        'parada_motivo4_maquina1': int(lista_paradas_maquina1.count(4)),                                 # 1.4.2.4 - Variável que conterá a quantidade de paradas do motivo 4 na máquina 1.
-        'parada_motivo5_maquina1': int(lista_paradas_maquina1.count(5)),                                 # 1.4.2.1 - Variável que conterá a quantidade de paradas do motivo 5 na máquina 1.
 
-        # 1.4.3 - INÍCIO DOS MOTIVOS DE PARADAS MÁQUINA 3
-        'parada_motivo1_maquina3': lista_paradas_maquina3.count(1),                                 # 1.4.3.1 - Variável que conterá a quantidade de paradas do motivo 1 na máquina 3.
-        'parada_motivo2_maquina3': lista_paradas_maquina3.count(2),                                 # 1.4.3.2 - Variável que conterá a quantidade de paradas do motivo 2 na máquina 3.
-        'parada_motivo3_maquina3': lista_paradas_maquina3.count(3),                                 # 1.4.3.3 - Variável que conterá a quantidade de paradas do motivo 3 na máquina 3.
-        'parada_motivo4_maquina3': lista_paradas_maquina3.count(4),                                 # 1.4.3.1 - Variável que conterá a quantidade de paradas do motivo 4 na máquina 3.
-        'parada_motivo5_maquina3': lista_paradas_maquina3.count(5),                                 # 1.4.3.1 - Variável que conterá a quantidade de paradas do motivo 5 na máquina 3.
+        # 20 - Variáveis: Variável contendo a quantidade de paradas em cada lista de paradas.
+        'paradas_maquina1': len(lista_paradas_maquina1),                                            
+        'paradas_maquina2': len(lista_paradas_maquina2),                                            
+        'paradas_maquina3': len(lista_paradas_maquina3),                                            
+        'paradas_maquina4': len(lista_paradas_maquina4),                                            
+        'paradas_maquina5': len(lista_paradas_maquina5),                                            
+        'paradas_maquina6': len(lista_paradas_maquina6),
+        ######################################################                                            
+        # @MQPARADAS7#                                       #
+        #'paradas_maquina(id)': len(lista_paradas_maquina5), #   
+        ######################################################
 
-        # 1.4.4 - INÍCIO DOS MOTIVOS DE PARADAS MÁQUINA 4
-        'parada_motivo1_maquina4': lista_paradas_maquina4.count(1),                                 # 1.4.4.1 - Variável que conterá a quantidade de paradas do motivo 1 na máquina 4.
-        'parada_motivo2_maquina4': lista_paradas_maquina4.count(2),                                 # 1.4.4.2 - Variável que conterá a quantidade de paradas do motivo 2 na máquina 4.
-        'parada_motivo3_maquina4': lista_paradas_maquina4.count(3),                                 # 1.4.4.3 - Variável que conterá a quantidade de paradas do motivo 3 na máquina 4.
-        'parada_motivo4_maquina4': lista_paradas_maquina4.count(4),                                 # 1.4.4.4 - Variável que conterá a quantidade de paradas do motivo 4 na máquina 4.
-        'parada_motivo5_maquina4': lista_paradas_maquina4.count(5),                                 # 1.4.4.5 - Variável que conterá a quantidade de paradas do motivo 5 na máquina 4.
 
-        # 1.4.5 - INÍCIO DOS MOTIVOS DE PARADAS MÁQUINA 5
-        'parada_motivo1_maquina5': lista_paradas_maquina5.count(1),                                 # 1.4.5.1 - Variável que conterá a quantidade de paradas do motivo 1 na máquina 5.
-        'parada_motivo2_maquina5': lista_paradas_maquina5.count(2),                                 # 1.4.5.2 - Variável que conterá a quantidade de paradas do motivo 2 na máquina 5.
-        'parada_motivo3_maquina5': lista_paradas_maquina5.count(3),                                 # 1.4.5.3 - Variável que conterá a quantidade de paradas do motivo 3 na máquina 5.
-        'parada_motivo4_maquina5': lista_paradas_maquina5.count(4),                                 # 1.4.5.4 - Variável que conterá a quantidade de paradas do motivo 4 na máquina 5.
-        'parada_motivo5_maquina5': lista_paradas_maquina5.count(5),                                 # 1.4.5.5 - Variável que conterá a quantidade de paradas do motivo 5 na máquina 5.
+        # 21 - Variáveis: Variável contendo o número de repetições do ID de cada tipo de parada na lista de paradas da máquina 1.
+        'parada_motivo1_maquina1': int(lista_paradas_maquina1.count(1)),                                 
+        'parada_motivo2_maquina1': int(lista_paradas_maquina1.count(2)),                                 
+        'parada_motivo3_maquina1': int(lista_paradas_maquina1.count(3)),                                 
+        'parada_motivo4_maquina1': int(lista_paradas_maquina1.count(4)),                                 
+        'parada_motivo5_maquina1': int(lista_paradas_maquina1.count(5)),
 
-        # 1.4.6 - INÍCIO DOS MOTIVOS DE PARADAS MÁQUINA 6
-        'parada_motivo1_maquina6': lista_paradas_maquina6.count(1),                                 # 1.4.6.1 - Variável que conterá a quantidade de paradas do motivo 1 na máquina 6.
-        'parada_motivo2_maquina6': lista_paradas_maquina6.count(2),                                 # 1.4.6.2 - Variável que conterá a quantidade de paradas do motivo 2 na máquina 6.
-        'parada_motivo3_maquina6': lista_paradas_maquina6.count(3),                                 # 1.4.6.3 - Variável que conterá a quantidade de paradas do motivo 3 na máquina 6.
-        'parada_motivo4_maquina6': lista_paradas_maquina6.count(4),                                 # 1.4.6.4 - Variável que conterá a quantidade de paradas do motivo 4 na máquina 6.
-        'parada_motivo5_maquina6': lista_paradas_maquina6.count(5),                                 # 1.4.6.5 - Variável que conterá a quantidade de paradas do motivo 5 na máquina 6.
 
-        # 1.4.6 - INÍCIO DOS MOTIVOS DE PARADAS MÁQUINA 7
-        'parada_motivo1_maquina7': lista_paradas_maquina7.count(1),                                 # 1.4.7.1 - Variável que conterá a quantidade de paradas do motivo 1 na máquina 7.
-        'parada_motivo2_maquina7': lista_paradas_maquina7.count(2),                                 # 1.4.7.2 - Variável que conterá a quantidade de paradas do motivo 2 na máquina 7.
-        'parada_motivo3_maquina7': lista_paradas_maquina7.count(3),                                 # 1.4.7.3 - Variável que conterá a quantidade de paradas do motivo 3 na máquina 7.
-        'parada_motivo4_maquina7': lista_paradas_maquina7.count(4),                                 # 1.4.7.4 - Variável que conterá a quantidade de paradas do motivo 4 na máquina 7.
-        'parada_motivo5_maquina7': lista_paradas_maquina7.count(5),                                 # 1.4.7.5 - Variável que conterá a quantidade de paradas do motivo 5 na máquina 7.
+        # 22 - Variáveis: Variável contendo o número de repetições do ID de cada tipo de parada na lista de paradas da máquina 2.
+        'parada_motivo1_maquina2': lista_paradas_maquina2.count(1),                                 
+        'parada_motivo2_maquina2': lista_paradas_maquina2.count(2),                                 
+        'parada_motivo3_maquina2': lista_paradas_maquina2.count(3),                                 
+        'parada_motivo4_maquina2': lista_paradas_maquina2.count(4),                                 
+        'parada_motivo5_maquina2': lista_paradas_maquina2.count(5),                                 
 
-        'ultima_atualizacao': datetime.now()                                                        # 1.4.9 - Função que pega a data e o horário atual para indicar a última atualização.
+
+        # 23 - Variáveis: Variável contendo o número de repetições do ID de cada tipo de parada na lista de paradas da máquina 3.
+        'parada_motivo1_maquina3': lista_paradas_maquina3.count(1),                                 
+        'parada_motivo2_maquina3': lista_paradas_maquina3.count(2),                                 
+        'parada_motivo3_maquina3': lista_paradas_maquina3.count(3),                                 
+        'parada_motivo4_maquina3': lista_paradas_maquina3.count(4),                                 
+        'parada_motivo5_maquina3': lista_paradas_maquina3.count(5),        
+
+
+        # 24 - Variáveis: Variável contendo o número de repetições do ID de cada tipo de parada na lista de paradas da máquina 4.
+        'parada_motivo1_maquina4': lista_paradas_maquina4.count(1),                                 
+        'parada_motivo2_maquina4': lista_paradas_maquina4.count(2),                                 
+        'parada_motivo3_maquina4': lista_paradas_maquina4.count(3),                                 
+        'parada_motivo4_maquina4': lista_paradas_maquina4.count(4),                                 
+        'parada_motivo5_maquina4': lista_paradas_maquina4.count(5),       
+
+
+        # 25 - Variáveis: Variável contendo o número de repetições do ID de cada tipo de parada na lista de paradas da máquina 5.
+        'parada_motivo1_maquina5': lista_paradas_maquina5.count(1),                                 
+        'parada_motivo2_maquina5': lista_paradas_maquina5.count(2),                                 
+        'parada_motivo3_maquina5': lista_paradas_maquina5.count(3),                                 
+        'parada_motivo4_maquina5': lista_paradas_maquina5.count(4),                                 
+        'parada_motivo5_maquina5': lista_paradas_maquina5.count(5),                                 
+
+        # 26 - Variáveis: Variável contendo o número de repetições do ID de cada tipo de parada na lista de paradas da máquina 6.
+        'parada_motivo1_maquina6': lista_paradas_maquina6.count(1),                                 
+        'parada_motivo2_maquina6': lista_paradas_maquina6.count(2),                                 
+        'parada_motivo3_maquina6': lista_paradas_maquina6.count(3),                                 
+        'parada_motivo4_maquina6': lista_paradas_maquina6.count(4),                                 
+        'parada_motivo5_maquina6': lista_paradas_maquina6.count(5),                                 
+
+        # 27 - Variável: Contém a hora atual obtida pelo sistema operacional.
+        'ultima_atualizacao': datetime.now()                                                        
  
     }
 
-    return render(request, 'index.html', dados)                                                     # 1.5 Função que renderiza a página index.html com os dados referenciados anteriormente.
+    # 28 - Retorna a renderição da página Index.html junto com os dados do tópico #15.
+    return render(request, 'index.html', dados)                                                     

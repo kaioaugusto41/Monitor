@@ -31,31 +31,31 @@ def geral(request):
 
         # 1.6.2 - INÍCIO DAS MÁQUINAS NA PÁGINA GERAL
         'maquina1': Maquina.objects.get(id=1),                                                      # 1.6.2.1 - Buscando o nome da máquina 1 no banco.
-        'maquina3': Maquina.objects.get(id=3),                                                      # 1.6.2.2 - Buscando o nome da máquina 3 no banco.
-        'maquina4': Maquina.objects.get(id=4),                                                      # 1.6.2.3 - Buscando o nome da máquina 4 no banco.
-        'maquina5': Maquina.objects.get(id=5),                                                      # 1.6.2.4 - Buscando o nome da máquina 5 no banco.
-        'maquina6': Maquina.objects.get(id=6),                                                      # 1.6.2.5 - Buscando o nome da máquina 6 no banco.
-        'maquina7': Maquina.objects.get(id=7),                                                      # 1.6.2.6 - Buscando o nome da máquina 7 no banco.
+        'maquina2': Maquina.objects.get(id=2),                                                      # 1.6.2.2 - Buscando o nome da máquina 3 no banco.
+        'maquina3': Maquina.objects.get(id=3),                                                      # 1.6.2.3 - Buscando o nome da máquina 4 no banco.
+        'maquina4': Maquina.objects.get(id=4),                                                      # 1.6.2.4 - Buscando o nome da máquina 5 no banco.
+        'maquina5': Maquina.objects.get(id=5),                                                      # 1.6.2.5 - Buscando o nome da máquina 6 no banco.
+        'maquina6': Maquina.objects.get(id=6),                                                      # 1.6.2.6 - Buscando o nome da máquina 7 no banco.
         # @MQGERAL1#
         #'maquina5': Maquina.objects.get(id=id da máquina nova),                                    # 1.6.2.7 - Buscando o nome da máquina 5 no banco.
 
         # 1.6.3 - INÍCIO DADOS DE PRODUÇÃO DAS MÁQUINAS
         'producao_maquina1': lista_producao_geral.count(1),                                        # 1.6.3.1 - Variável que conta quantas peças foram produzidas no período filtrado na máquina com o ID 1
-        'producao_maquina3': lista_producao_geral.count(3),                                        # 1.6.3.2 - Variável que conta quantas peças foram produzidas no período filtrado na máquina com o ID 3
-        'producao_maquina4': lista_producao_geral.count(4),                                        # 1.6.3.3 - Variável que conta quantas peças foram produzidas no período filtrado na máquina com o ID 4
-        'producao_maquina5': lista_producao_geral.count(5),                                        # 1.6.3.4 - Variável que conta quantas peças foram produzidas no período filtrado na máquina com o ID 5
-        'producao_maquina6': lista_producao_geral.count(6),                                        # 1.6.3.5 - Variável que conta quantas peças foram produzidas no período filtrado na máquina com o ID 6
-        'producao_maquina7': lista_producao_geral.count(7),                                        # 1.6.3.6 - Variável que conta quantas peças foram produzidas no período filtrado na máquina com o ID 7 
+        'producao_maquina2': lista_producao_geral.count(2),                                        # 1.6.3.2 - Variável que conta quantas peças foram produzidas no período filtrado na máquina com o ID 3
+        'producao_maquina3': lista_producao_geral.count(3),                                        # 1.6.3.3 - Variável que conta quantas peças foram produzidas no período filtrado na máquina com o ID 4
+        'producao_maquina4': lista_producao_geral.count(4),                                        # 1.6.3.4 - Variável que conta quantas peças foram produzidas no período filtrado na máquina com o ID 5
+        'producao_maquina5': lista_producao_geral.count(5),                                        # 1.6.3.5 - Variável que conta quantas peças foram produzidas no período filtrado na máquina com o ID 6
+        'producao_maquina6': lista_producao_geral.count(6),                                        # 1.6.3.6 - Variável que conta quantas peças foram produzidas no período filtrado na máquina com o ID 7 
         # @MQGERAL2#
         #'producao_maquina5': lista_producao_geral.count(id da máquina nova),                      # 1.6.3.7 - Variável que conta quantas peças foram produzidas no período filtrado na máquina com o ID 5
         
         # 1.6.4 - INÍCIO DADOS DE PARADAS DAS MÁQUINAS
         'paradas_maquina1': lista_paradas_geral.count(1),                                          # 1.6.4.1 - Variável que conta quantas paradas foram registradas no período filtrado na máquina com o ID 1
-        'paradas_maquina3': lista_paradas_geral.count(3),                                          # 1.6.4.2 - Variável que conta quantas paradas foram registradas no período filtrado na máquina com o ID 3
-        'paradas_maquina4': lista_paradas_geral.count(4),                                          # 1.6.4.3 - Variável que conta quantas paradas foram registradas no período filtrado na máquina com o ID 4
-        'paradas_maquina5': lista_paradas_geral.count(5),                                          # 1.6.4.4 - Variável que conta quantas paradas foram registradas no período filtrado na máquina com o ID 5
-        'paradas_maquina6': lista_paradas_geral.count(6),                                          # 1.6.4.5 - Variável que conta quantas paradas foram registradas no período filtrado na máquina com o ID 6
-        'paradas_maquina7': lista_paradas_geral.count(7),                                          # 1.6.4.6 - Variável que conta quantas paradas foram registradas no período filtrado na máquina com o ID 7   
+        'paradas_maquina2': lista_paradas_geral.count(2),                                          # 1.6.4.2 - Variável que conta quantas paradas foram registradas no período filtrado na máquina com o ID 3
+        'paradas_maquina3': lista_paradas_geral.count(3),                                          # 1.6.4.3 - Variável que conta quantas paradas foram registradas no período filtrado na máquina com o ID 4
+        'paradas_maquina4': lista_paradas_geral.count(4),                                          # 1.6.4.4 - Variável que conta quantas paradas foram registradas no período filtrado na máquina com o ID 5
+        'paradas_maquina5': lista_paradas_geral.count(5),                                          # 1.6.4.5 - Variável que conta quantas paradas foram registradas no período filtrado na máquina com o ID 6
+        'paradas_maquina6': lista_paradas_geral.count(6),                                          # 1.6.4.6 - Variável que conta quantas paradas foram registradas no período filtrado na máquina com o ID 7   
         #@MQGERAL3#
         #'paradas_maquina5': lista_paradas_geral.count(id da máquina nova),                        # 1.6.4.7 - Variável que conta quantas paradas foram registradas no período filtrado na máquina com o ID 5
         

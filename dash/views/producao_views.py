@@ -48,11 +48,11 @@ def producao(request):
 
         # INÍCIO DADOS DE PRODUÇÃO DAS MÁQUINAS NA PÁGINA PRODUÇÃO
         'producao_maquina1': lista_producao_producao.count(1),                                      # 1.3.2 - Variável que conta quantas peças foram produzidas no período filtrado na máquina com o ID 1
-        'producao_maquina3': lista_producao_producao.count(3),                                      # 1.3.3 - Variável que conta quantas peças foram produzidas no período filtrado na máquina com o ID 3
-        'producao_maquina4': lista_producao_producao.count(4),                                      # 1.3.4 - Variável que conta quantas peças foram produzidas no período filtrado na máquina com o ID 4
-        'producao_maquina5': lista_producao_producao.count(5),                                      # 1.3.5 - Variável que conta quantas peças foram produzidas no período filtrado na máquina com o ID 5
-        'producao_maquina6': lista_producao_producao.count(6),                                      # 1.3.5 - Variável que conta quantas peças foram produzidas no período filtrado na máquina com o ID 6
-        'producao_maquina7': lista_producao_producao.count(7),                                      # 1.3.6 - Variável que conta quantas peças foram produzidas no período filtrado na máquina com o ID 7
+        'producao_maquina2': lista_producao_producao.count(2),                                      # 1.3.3 - Variável que conta quantas peças foram produzidas no período filtrado na máquina com o ID 3
+        'producao_maquina3': lista_producao_producao.count(3),                                      # 1.3.4 - Variável que conta quantas peças foram produzidas no período filtrado na máquina com o ID 4
+        'producao_maquina4': lista_producao_producao.count(4),                                      # 1.3.5 - Variável que conta quantas peças foram produzidas no período filtrado na máquina com o ID 5
+        'producao_maquina5': lista_producao_producao.count(5),                                      # 1.3.5 - Variável que conta quantas peças foram produzidas no período filtrado na máquina com o ID 6
+        'producao_maquina6': lista_producao_producao.count(6),                                      # 1.3.6 - Variável que conta quantas peças foram produzidas no período filtrado na máquina com o ID 7
         # @MQPRODUCAO1#
         #'producao_maquina(id da máquina nova)': lista_producao_producao.count(id da máquina nova)  # 1.3.5 - Variável que conta quantas peças foram produzidas no período filtrado na máquina com o ID 7
 
