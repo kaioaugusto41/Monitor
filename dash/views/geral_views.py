@@ -10,7 +10,13 @@ from .funcoes.pega_datas import dataInicial, dataFinal
 def geral(request):
 
     data_antiga_geral = str(datetime.now())[:11] + '00:00:01'                                      # 1.2.1 - Data antiga sem filtro.
-    data_nova_geral = str(datetime.now()) [:19]
+    data_nova_geral = str(datetime.now())[:19]
+
+    # DADOS PARA JOGAR E BAIXAR RELATÓRIO NA VIEWS PDF
+    data_antiga_relatorio = str(datetime.now())[:11]
+    hora_antiga_relatorio = '00:00:01'
+    data_nova_relatorio = str(datetime.now())[:11]
+    hora_nova_relatorio = str(datetime.now())[11:19]
 
     lista_producao_geral = []                                                    # 1.2.2 - Data nova sem filtro.
     adicionaProducaoLista(data_antiga_geral, data_nova_geral, lista_producao_geral)                                                          # 1.3.4.1 - Função que adicionará na lista de produção geral o primeiro item da lista retornada do banco.
@@ -19,13 +25,25 @@ def geral(request):
     adicionaParadasLista(data_antiga_geral, data_nova_geral, lista_paradas_geral) 
     
     # 1.5 - PRODUÇÃO E PARADAS DAS MÁQUINAS COM FILTRO DE DATA E HORÁRIO (DEFINIDA PELO USUÁRIO)
-    if request.method == 'POST':                                                                     # 1.5.1 - Se houver uma requisição do tipo POST na página...
+    if request.method == 'POST':
+        data_antiga_relatorio = request.POST.get('data_antiga_geral', False)
+        hora_antiga_relatorio = request.POST.get('hora_antiga', False)
+        data_nova_relatorio = request.POST.get('data_nova_geral', False)                                                                     # 1.5.1 - Se houver uma requisição do tipo POST na página... 
+        hora_nova_relatorio = request.POST.get('hora_nova', False)
+        
         adicionaProducaoLista(dataInicial('POST', request, 'data_antiga_geral', 'hora_antiga'), dataFinal('POST', request, 'data_nova_geral', 'hora_nova'), lista_producao_geral)
         adicionaParadasLista(dataInicial('POST', request, 'data_antiga_geral', 'hora_antiga'), dataFinal('POST', request, 'data_nova_geral', 'hora_nova'), lista_paradas_geral)
 
+    print(hora_nova_relatorio)
 
     # 1.6 - INÍCIO DOS DADOS QUE SERÃO JOGADOS PARA O TEMPLATE
     dados = {
+
+        'data_antiga_relatorio': data_antiga_relatorio,
+        'hora_antiga_relatorio': hora_antiga_relatorio,
+        'data_nova_relatorio': data_nova_relatorio,
+        'hora_nova_relatorio': hora_nova_relatorio,
+
 
         'maquinas': Maquina.objects.all(),                                                          # 1.6.1 - Variável com comando que busca todas as máquinas cadastradas no banco.
 

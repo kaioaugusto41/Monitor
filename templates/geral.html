@@ -21,17 +21,17 @@
             <ul class="navbar-nav w-100">
                 <li class="nav-item w-100">
                 <form class="nav-link mt-2 mt-md-0 d-none d-lg-flex search">
-                    <input type="text" class="form-control" placeholder="Pesquisar máquinas">
+                  <h6 class="text-muted font-weight-normal">Atualizado em {{ultima_atualizacao}}</h6>
                 </form>
                 </li>
             </ul>
             
             <ul class="navbar-nav navbar-nav-right">
-                <a type="button" class="btn btn-outline-warning btn-icon-text" onclick="Refresh()">Atualizar</a>
+                <a  class="btn btn-success btn-icon-text d-none d-lg-flex" onclick="Refresh()">Atualizar</a>
                 
-                <a style="width: 120px; margin-left: 20px;" type="button" class="btn btn-outline-warning btn-icon-text" href={% url 'geral' %}>Limpar filtros</a>
+                <a style="width: 120px; margin-left: 20px;"  class="btn btn-success btn-icon-text d-none d-lg-flex" href={% url 'geral' %}>Limpar filtros</a>
                 
-                <li class="nav-item dropdown d-none d-lg-block">
+                <li class="nav-item dropdown d-lg-block">
                 <a class="nav-link btn btn-success create-new-button" id="createbuttonDropdown" data-toggle="dropdown" aria-expanded="false" href="#">Filtrar dados</a>
                 <div style='width: 300px;' class="dropdown-menu dropdown-menu-right navbar-dropdown preview-list" aria-labelledby="createbuttonDropdown">
                     <h6 class="p-3 mb-0">Filtros</h6>
@@ -66,13 +66,8 @@
           <div class="content-wrapper">
             <div class="page-header">
               <h3 class="page-title">Gráficos gerais</h3>
-              <nav aria-label="breadcrumb">
-                <ol class="breadcrumb">
-                  <li class="breadcrumb-item"><a href="#">Charts</a></li>
-                  <li class="breadcrumb-item active" aria-current="page">Chart-js</li>
-                </ol>
-                </div>
-            </nav>
+            </div>
+          
             <div class="row">
               {% for maquina in maquinas %}
               <div class="col-xl-3 col-sm-6 grid-margin stretch-card">
@@ -82,11 +77,14 @@
                       <div class="col-9">
                         <div class="d-flex align-items-center align-self-start">
                           <h3 class="mb-0">{{maquina.nome_maquina}}</h3>
+                          {% if maquina.status_maquina == True %}
                           <p class="text-success ml-2 mb-0 font-weight-medium">ON</p>
+                          {% elif maquina.status_maquina == False %}
+                          <p class="text-danger ml-2 mb-0 font-weight-medium">OFF</p>
+                          {% endif %}
                         </div>
                       </div>
                     </div>
-                    <h6 class="text-muted font-weight-normal">{{ultima_atualizacao}}</h6>
                   </div>
                 </div>
               </div>
@@ -124,7 +122,20 @@
       </div>
       <!-- page-body-wrapper ends -->
     </div>
-    
+    <!-- BAIXA RELATÓRIO DA PÁGINA -->
+    <form action={% url 'gera_pdf_geral' %} method='GET'>
+      {% csrf_token %}
+    <div class='d-none'>
+    <input name='data_antiga_relatorio' value={{data_antiga_relatorio}} style='height: 35px;' id="date" type="date" required><input name='hora_antiga' value={{hora_antiga_relatorio}} style='margin-left: 20px; height: 35px;' id="date" type="time" required><br><br>
+    <input name='data_nova_relatorio' value={{data_nova_relatorio}} style='height: 35px;' id="date" type="date" required><input name='hora_nova' value={{hora_nova_relatorio}} style='margin-left: 20px; height: 35px;' id="date" type="time" required>
+    {% for maquina in maquinas %}
+    <input name='filtro_{{maquina.id}}' value='{{maquina.id}}' style='height: 35px;'  required>
+    {% endfor %}
+    </div>
+    <button style=' margin-left: 90%; margin-bottom: 50px;' class="btn btn-success btn-rounded btn-icon d-none d-lg-flex fixed-bottom">
+      <i style=' margin: auto;' class="mdi mdi-download"></i>
+    </button>
+   <form>
     
 
 {% endblock %}
