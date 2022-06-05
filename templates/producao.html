@@ -20,15 +20,15 @@
             <ul class="navbar-nav w-100">
                 <li class="nav-item w-100">
                 <form class="nav-link mt-2 mt-md-0 d-none d-lg-flex search">
-                    <input type="text" class="form-control" placeholder="Pesquisar máquinas">
+                  <p style='color: #6c729385;' class="mb-0">Atualizado em {{ultima_atualizacao}}</p>
                 </form>
                 </li>
             </ul>
             
             <ul class="navbar-nav navbar-nav-right">
-                <a type="button" class="btn btn-outline-warning btn-icon-text" onclick="Refresh()">Atualizar</a>
+                <a type="button" class="btn btn-success btn-icon-text" onclick="Refresh()">Atualizar</a>
               
-                <a style="width: 120px; margin-left: 20px;" type="button" class="btn btn-outline-warning btn-icon-text" href={% url 'producao' %}>Limpar filtros</a>
+                <a style="width: 120px; margin-left: 20px;" type="button" class="btn btn-success btn-icon-text" href={% url 'producao' %}>Limpar filtros</a>
                 
                 <li class="nav-item dropdown d-none d-lg-block">
                   <a class="nav-link btn btn-success create-new-button" id="createbuttonDropdown" data-toggle="dropdown" aria-expanded="false" href="#">Filtrar dados</a>
@@ -75,13 +75,7 @@
           <div class="content-wrapper">
             <div class="page-header">
               <h3 class="page-title">Relatório de produção</h3>
-              <nav aria-label="breadcrumb">
-                <ol class="breadcrumb">
-                  <li class="breadcrumb-item"><a href="#">Charts</a></li>
-                  <li class="breadcrumb-item active" aria-current="page">Chart-js</li>
-                </ol>
-                </div>
-            </nav>
+            </div>
 
               <div class="row ">
                 <div class="col-12 grid-margin">
@@ -91,8 +85,7 @@
                       <div class="table-responsive">
                         <table class="table">
                           <thead>
-                            <tr>
-                              
+                            <tr>    
                               <th style='text-align: center;'> Máquina </th>
                               <th style='text-align: center;'> Código da máquina </th>
                               <th style='text-align: center;'> Produção </th>
@@ -160,6 +153,20 @@
       <!-- page-body-wrapper ends -->
     </div>
 
+    <!-- BAIXA RELATÓRIO DA PÁGINA -->
+    <form action={% url 'gera_pdf_producao' %} method='GET'>
+      {% csrf_token %}
+    <div class='d-none'>
+    <input name='data_antiga_relatorio' value={{data_antiga_relatorio}} style='height: 35px;' id="date" type="date" required><input name='hora_antiga' value={{hora_antiga_relatorio}} style='margin-left: 20px; height: 35px;' id="date" type="time" required><br><br>
+    <input name='data_nova_relatorio' value={{data_nova_relatorio}} style='height: 35px;' id="date" type="date" required><input name='hora_nova' value={{hora_nova_relatorio}} style='margin-left: 20px; height: 35px;' id="date" type="time" required>
+    {% for maquina in maquinas_filtradas %}
+    <input name='filtro_{{maquina.id}}' value='{{maquina.id}}' style='height: 35px;'  required>
+    {% endfor %}
+    </div>
+    <button style=' margin-left: 90%; margin-bottom: 50px;' class="btn btn-success btn-rounded btn-icon d-none d-lg-flex fixed-bottom">
+      <i style=' margin: auto;' class="mdi mdi-download"></i>
+    </button>
+   <form>
 
 
 {% endblock %}

@@ -47,8 +47,18 @@ def paradas(request):
     for maquina in Maquina.objects.values('id'):                                                    # 1.2.16 - Loop que percorrerá todas as máquinas cadastradas no banco...
         maquinas_filtradas.append(maquina['id'])                                                    # 1.2.16.1 - Adicionando cada máquina cadastrada percorrida na lista acima (maquinas_filtradas)
     
+    data_antiga_relatorio = str(datetime.now())[:11]
+    hora_antiga_relatorio = '00:00:01'
+    data_nova_relatorio = str(datetime.now())[:11]
+    hora_nova_relatorio = str(datetime.now())[11:19]
+    
     # 1.3 - PARADAS DAS MÁQUINAS COM FILTRO DE DATA E HORÁRIO (DEFINIDA PELO USUÁRIO)
     if request.method == 'POST':                                                                    # 1.3.1 - Se houver uma requisição do tipo POST na página...
+        data_antiga_relatorio = request.POST.get('data_antiga_paradas', False)
+        hora_antiga_relatorio = request.POST.get('hora_antiga', False)
+        data_nova_relatorio = request.POST.get('data_nova_paradas', False)
+        hora_nova_relatorio = request.POST.get('hora_nova', False)
+       
         maquinas_filtradas = []                                                                     # 1.3.2 - Lista de máquinas com filtro...
         filtraMaquinas('POST', request, maquinas_filtradas)                                      # 1.3.3.2.1 - Adicionando os ids a serem mostrados na lista (maquinas_filtradas)
 
@@ -61,6 +71,11 @@ def paradas(request):
     
     # 1.4 - DADOS QUE SERÃO JOGADOS PARA O TEMPLATE
     dados = {
+
+        'data_antiga_relatorio': data_antiga_relatorio,
+        'hora_antiga_relatorio': hora_antiga_relatorio,
+        'data_nova_relatorio': data_nova_relatorio,
+        'hora_nova_relatorio': hora_nova_relatorio,
         
         'maquinas': Maquina.objects.all(),                                                          
         

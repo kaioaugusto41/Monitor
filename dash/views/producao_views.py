@@ -26,9 +26,20 @@ def producao(request):
         maquinas_filtradas.append(maquina['id'])                                                    # 1.1.11.1 - Adicionando cada máquina cadastrada percorrida na lista acima (maquinas_filtradas)
 
 
+    data_antiga_relatorio = str(datetime.now())[:11]
+    hora_antiga_relatorio = '00:00:01'
+    data_nova_relatorio = str(datetime.now())[:11]
+    hora_nova_relatorio = str(datetime.now())[11:19]
+    
     # 1.2 - PRODUÇÃO DAS MÁQUINAS COM FILTRO DE DATA E HORÁRIO (DEFINIDA PELO USUÁRIO)
     if request.method == 'POST':                                                                    # 1.2.1 - Se houver uma requisição do tipo POST na página...
-        
+        data_antiga_relatorio = request.POST.get('data_antiga_producao', False)
+        hora_antiga_relatorio = request.POST.get('hora_antiga', False)
+        data_nova_relatorio = request.POST.get('data_nova_producao', False)
+        hora_nova_relatorio = request.POST.get('hora_nova', False)
+
+        print(data_antiga_relatorio)
+
         filtraMaquinas('POST', request, maquinas_filtradas)
 
         data_antiga_producao = dataInicial('POST', request, 'data_antiga_producao', 'hora_antiga')
@@ -36,9 +47,16 @@ def producao(request):
         
         adicionaProducaoLista(data_antiga_producao, data_nova_producao, lista_producao_producao)
 
+    
+
         
     # 1.3 - DADOS QUE SERÃO JOGADOS PARA O TEMPLATE
     dados = {
+
+        'data_antiga_relatorio': data_antiga_relatorio,
+        'hora_antiga_relatorio': hora_antiga_relatorio,
+        'data_nova_relatorio': data_nova_relatorio,
+        'hora_nova_relatorio': hora_nova_relatorio,
         
         # MÁQUINAS QUE SERÃO MOSTRADAS SEM FILTRO (TODAS)
         'maquinas': Maquina.objects.all(),

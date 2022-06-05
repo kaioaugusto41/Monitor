@@ -34,7 +34,7 @@ def geral(request):
         adicionaProducaoLista(dataInicial('POST', request, 'data_antiga_geral', 'hora_antiga'), dataFinal('POST', request, 'data_nova_geral', 'hora_nova'), lista_producao_geral)
         adicionaParadasLista(dataInicial('POST', request, 'data_antiga_geral', 'hora_antiga'), dataFinal('POST', request, 'data_nova_geral', 'hora_nova'), lista_paradas_geral)
 
-    print(hora_nova_relatorio)
+    
 
     # 1.6 - INÍCIO DOS DADOS QUE SERÃO JOGADOS PARA O TEMPLATE
     dados = {

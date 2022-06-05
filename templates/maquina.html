@@ -21,15 +21,15 @@
             <ul class="navbar-nav w-100">
                 <li class="nav-item w-100">
                 <form class="nav-link mt-2 mt-md-0 d-none d-lg-flex search">
-                    <input type="text" class="form-control" placeholder="Pesquisar máquinas">
+                  <p style='color: #6c729385;' class="mb-0">Atualizado em {{ultima_atualizacao}}</p>
                 </form>
                 </li>
             </ul>
             
             <ul class="navbar-nav navbar-nav-right">
-                <a type="button" class="btn btn-outline-warning btn-icon-text" onclick="Refresh()">Atualizar</a>
+                <a type="button" class="btn btn-success btn-icon-text" onclick="Refresh()">Atualizar</a>
                 
-                <a style="width: 120px; margin-left: 20px;" type="button" class="btn btn-outline-warning btn-icon-text" href={% url 'maquina' maquina.id %}>Limpar filtros</a>
+                <a style="width: 120px; margin-left: 20px;" type="button" class="btn btn-success btn-icon-text" href={% url 'maquina' maquina.id %}>Limpar filtros</a>
                 
                 <li class="nav-item dropdown d-none d-lg-block">
                 <a class="nav-link btn btn-success create-new-button" id="createbuttonDropdown" data-toggle="dropdown" aria-expanded="false" href="#">Filtrar dados</a>
@@ -66,14 +66,8 @@
           <div class="content-wrapper">
             <div class="page-header">
               <h3 class="page-title">{{maquina}}</h3>
-              <nav aria-label="breadcrumb">
-                <ol class="breadcrumb">
-                  <li class="breadcrumb-item"><a href="#">Charts</a></li>
-                  <li class="breadcrumb-item active" aria-current="page">Chart-js</li>
-                </ol>
-                </div>
-            </nav>
-            
+            </div>
+
             <div class="row">
                 <div class="col-sm-4 grid-margin">
                   <div class="card">
